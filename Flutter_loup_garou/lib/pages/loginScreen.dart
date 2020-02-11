@@ -1,4 +1,5 @@
 import 'package:flutter_loup_garou/animations/fadeInState.dart';
+import 'package:flutter_loup_garou/pages/lobbyScreen.dart';
 import 'package:flutter_loup_garou/api.dart';
 import 'package:flutter/material.dart';
 
@@ -100,7 +101,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                   child: InkWell(
                                     onTap: () {
                                       if (_formKey.currentState.validate()) {
-                                        postRequest();
+                                        // postRequest();
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(builder: (context) => LobbyScreen()),
+                                        );
                                       }
                                     },
                                     child: Padding(
