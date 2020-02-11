@@ -1,4 +1,5 @@
 import 'package:flutter_loup_garou/animations/fadeInState.dart';
+import 'package:flutter_loup_garou/api.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -25,7 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Container(
-                      padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0),
+                      padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
@@ -33,26 +34,27 @@ class _LoginScreenState extends State<LoginScreen> {
                             image: AssetImage("assets/images/background.png"),
                             fit: BoxFit.cover
                           ),
-                          SizedBox(height: 50.0),
+                          SizedBox(height: 10.0),
                           Form(
                             key: _formKey,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 TextFormField(
+                                  style: TextStyle(color: Colors.white, fontSize: 15),
                                   decoration: InputDecoration(
-                                    labelText: 'Numéro de partie',
-                                    labelStyle: TextStyle(
-                                      color: Colors.white
-                                    ),
+                                    prefixIcon: Icon(Icons.arrow_forward_ios, color: Colors.white, size: 15),
+                                    labelText: 'Pseudo',
+                                    labelStyle: TextStyle(color: Colors.white),
                                     fillColor: Colors.white,
+                                    hoverColor: Colors.white,
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(color: Colors.white, width: 1.0),
-                                      borderRadius: BorderRadius.circular(25.0),
+                                      borderRadius: BorderRadius.circular(50.0)
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderSide: BorderSide(color: Colors.white, width: 1.0),
-                                      borderRadius: BorderRadius.circular(25.0),
+                                      borderRadius: BorderRadius.circular(50.0)
                                     ),
                                   ),
                                   validator: (value) {
@@ -62,7 +64,32 @@ class _LoginScreenState extends State<LoginScreen> {
                                     return null;
                                   },
                                 ),
-                                SizedBox(height: 50.0),
+                                SizedBox(height: 20.0),
+                                TextFormField(
+                                  style: TextStyle(color: Colors.white, fontSize: 15),
+                                  decoration: InputDecoration(
+                                    prefixIcon: Icon(Icons.arrow_forward_ios, color: Colors.white, size: 15),
+                                    labelText: 'Numéro de partie',
+                                    labelStyle: TextStyle(color: Colors.white),
+                                    fillColor: Colors.white,
+                                    hoverColor: Colors.white,
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.white, width: 1.0),
+                                      borderRadius: BorderRadius.circular(50.0)
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.white, width: 1.0),
+                                      borderRadius: BorderRadius.circular(50.0)
+                                    ),
+                                  ),
+                                  validator: (value) {
+                                    if (value.isEmpty) {
+                                      return 'Veuillez entrer un numéro de partie';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                                SizedBox(height: 30.0),
                                 FadeInState(
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -73,7 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   child: InkWell(
                                     onTap: () {
                                       if (_formKey.currentState.validate()) {
-                                        Scaffold.of(context).showSnackBar(SnackBar(content: Text('Recherche de la partie')));
+                                        postRequest();
                                       }
                                     },
                                     child: Padding(
