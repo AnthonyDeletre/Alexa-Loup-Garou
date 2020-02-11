@@ -1,6 +1,8 @@
 
 import 'package:flutter/material.dart';
 
+import '../data.dart';
+
 class GameScreen extends StatefulWidget {
   @override
   _GameScreenState createState() => _GameScreenState();
@@ -9,28 +11,16 @@ class GameScreen extends StatefulWidget {
 class _GameScreenState extends State<GameScreen> {
   
   final _formKey = GlobalKey<FormState>();
+  bool imageVisible = false;
+  int role = 7;//TODO
+  int numeroJoueur = 1;
 
   @override
   Widget build(BuildContext context){
     return Scaffold(
       backgroundColor: Color.fromRGBO(56, 36, 131, 1.0),
-      body: Center(
-        child: Column(
-          children: <Widget>[
-            Container(
-              margin: EdgeInsets.all(20),
-              child:TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Joueur X',
-                ),
-                
-              )
-            )
-          ],
-        ),
-
-        /*child: ListView(
+      body: Container(
+        child: ListView(
           children: <Widget>[
             Row(
               children: <Widget>[
@@ -40,26 +30,50 @@ class _GameScreenState extends State<GameScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Container(
-                        padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0),
+                        padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 50.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Image(
-                              image: AssetImage("asset/images/cards/back.png"),
-                              fit: BoxFit.cover
+                            Center(
+                              child: Text(
+                                "Joueur "+ numeroJoueur.toString(),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 35
+                                )
+                              ),
                             ),
-                            SizedBox(height: 50.0)
-                          ]
+                            Container(
+                              padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 40.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  InkWell(
+                                    child: Image(
+                                      image:(imageVisible ? AssetImage(Player.idCarteToChemin(role)) :AssetImage(Player.idCarteToChemin(0))) ,
+                                      fit: BoxFit.cover
+                                      ),
+                                      onTap: (){
+                                        setState(() {
+                                          imageVisible = !imageVisible;
+                                        });
+                                      }
+                                    )
+                                  ]
+                                )
+                              )
+                            ]
+                          )
                         )
-                      )
-                    ]
+                      ],
+                    )
                   )
-                )
-              ]
-            )
-          ]
-        )*/
-      )
+                ],
+              )
+            ]
+          )
+        )
     );
   }
 
