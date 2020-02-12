@@ -1,0 +1,45 @@
+    //Debut de la nuit
+La nuit tombe et tout le village s'endort.
+
+    //Reveil de la voyante
+Dans ce calme plat, la voyante se réveille et scrupte les pensées d'un villageois.
+
+    //La voyante se rendort
+La voyante est rassurée et peut maintenant dormir sans crainte.
+
+  	//Les loups garous se réveillent
+La lune à son apogée, les loups-garous se réveillent la faim au ventre. Ils doivent se mettre d'accord pour tuer quelqu'un, afin de survivre.
+
+    //Les loups garous se rendorment
+L'aube arrivent donc les loups-garous vont se cacher.
+	
+	//La sorcière se réveille
+La sorcière se réveille tôt ce matin pour peut-être utiliser une de ces potions.
+
+	//Debut du jour
+Le village entier se réveille peu à peu alors que le soleil illumine la place.
+	//si une victime
+Vous remarquez tout de suite qu'il manque quelqu'un à l'appel : Joueur X est mort.
+Il était Y.
+
+	//Si X est chasseur, X PEUT choisir quelqu'un à tuer
+	//Si X a choisis quelqu'un
+Dans son dernier souffle, le chasseur a tué Z.
+Il était Y.
+	//Si X n'a pas choisis quelqu'un
+Le chasseur s'en est allé sans pouvoir assouvir sa vengeance.
+
+	//Si plusieurs victimes
+De plus, joueur X ne s'est pas réveillé ce jour là.
+Il était Y.
+	//Si chasseur, voir au dessus
+
+	//Si aucune victime
+Tous le monde est présent ce matin, malgré l'ambiance pesante au village.
+
+	//Dans tous les cas
+Il faut essayer de démasquer les coupables. Le peuple débat afin de choisir qui pendre aujourd'hui.
+
+Le joueur X a été choisis aujourd'hui. Il est Y.
+	//Se référer au morts
+	//Retourner au début
