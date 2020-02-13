@@ -53,57 +53,69 @@ class _LobbyScreenState extends State<LobbyScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Container(
-                              height: MediaQuery.of(context).size.height,
+                              height: MediaQuery.of(context).size.height - 120.0,
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.only(topLeft: Radius.circular(40.0), topRight: Radius.circular(40.0))
                               ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
+                              child: ListView(
+                                primary: false,
                                 children: <Widget>[
                                   SizedBox(height: 20.0),
-                                  StreamBuilder<List<String>>(
-                                    stream: manager.joueurList,
-                                    builder: (context,snapshot) {
-                                      List<String> listeJoueur = snapshot.data;
-                                      return ListView.builder(
-                                        shrinkWrap: true,
-                                        itemCount: listeJoueur.length,
-                                        itemBuilder: (context, index) {
-                                            return _listItem(context, listeJoueur[index]);            
-                                        }
-                                      );
-                                    }
-                                  ),
-                                  Container(
-                                    child: Padding(
-                                      padding: EdgeInsets.only(top: 40.0, left: 20.0, right: 20.0, bottom: 50.0),
-                                      child: InkWell(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(builder: (context) => GameScreen()),
-                                          );
-                                        },
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.all(Radius.circular(40.0)),
-                                          color: Color.fromRGBO(246, 187, 28, 1.0)
+                                  Stack(
+                                    children: <Widget>[
+                                      Positioned(
+                                      child: Container(
+                                        height: MediaQuery.of(context).size.height - 160.0,
+                                        padding: EdgeInsets.only(bottom: 60.0),
+                                          child: StreamBuilder<List<String>>(
+                                            stream: manager.joueurList,
+                                            builder: (context,snapshot) {
+                                              List<String> listeJoueur = snapshot.data;
+                                              return ListView.builder(
+                                                shrinkWrap: true,
+                                                itemCount: listeJoueur.length,
+                                                itemBuilder: (context, index) {
+                                                    return _listItem(context, listeJoueur[index]);            
+                                                }
+                                              );
+                                            }
                                           ),
-                                          height: 50.0,
-                                          child: Center(
-                                            child: Text(
-                                              'Prêt',
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 16,
-                                              )
+                                        ),
+                                      ),
+                                      Positioned(
+                                        bottom: 0.0,
+                                        left: 100.0,
+                                        child: Container(
+                                          child: InkWell(
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(builder: (context) => GameScreen()),
+                                              );
+                                            },
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.all(Radius.circular(40.0)),
+                                              color: Color.fromRGBO(246, 187, 28, 1.0)
+                                              ),
+                                              width: 200.0,
+                                              height: 50.0,
+                                              child: Center(
+                                                child: Text(
+                                                  'Prêt',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 16,
+                                                  )
+                                                ),
+                                              ),
                                             ),
                                           ),
                                         ),
                                       ),
-                                    ),
+                                    ],
                                   ),
                                 ],
                               )
@@ -128,7 +140,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
   Widget _listItem(BuildContext context, String listeJoueur){
 
     return Padding(
-      padding: EdgeInsets.only(top: 20.0),
+      padding: EdgeInsets.only(top: 10.0, bottom: 5.0),
       child: Row(
           children: <Widget>[
             Expanded(flex: 1,
@@ -155,10 +167,9 @@ class _LobbyScreenState extends State<LobbyScreen> {
                         SizedBox(height: 20.0),
                         Divider(
                           height: 5.0, 
-                          color: Color.fromRGBO(56, 36, 131, 1.0), 
-                          thickness: 1.0, 
-                          indent: 60.0,
-                          endIndent: 60.0,
+                          color: Color.fromRGBO(56, 36, 131, 1.0),
+                          indent: 50.0,
+                          endIndent: 50.0,
                         )
                       ],
                     ),
