@@ -13,15 +13,16 @@ class Data {
     else{ throw Exception('Failed'); }
   }
 
-  Stream<String> get joueurList async*{
+  Stream<List<String>> get joueurList async*{
     
     final response = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/listejoueur'); 
 
     if(response.statusCode == 200){
-      Item item = Item.fromJson(json.decode(response.body));
-      yield item.joueurs; 
+      yield listJoueurToString(response.body); 
     }
-    else{ throw Exception('Failed'); }
+    else{ 
+      //throw Exception('Failed'); }
+      yield null;}
   }
 }
 
@@ -33,16 +34,39 @@ Future<bool> connect(String username) async{
   else{ return false; }
 }
 
-class Item {
-  String joueurs;
+/* class Item {
 
+  String joueurs;
+  
   Item({this.joueurs});
+  
   factory Item.fromJson(dynamic json){
+    print("json3 "+json );
     return Item(joueurs: json['joueurs'] as String);
   }
+} */
+
+List<String> listJoueurToString(String json){
+  print("test" + json);
+  List<String> ls = new List<String>();
+  int i=0;
+  while(json[i]!='['){
+    i++;
+  }
+  i++;
+  int j=-1;
+  while(json[i]!=']'){//tant que pas fini
+    if(json[i]=='"'){
+      if(json[i+1] != ',' && json[i+1] != ']'){//début mot
+        ls.add("");
+        j++;
+      }//else{//i = '"' && i+1 == ',' Fin du mot}
+    }else{ //i != '"'
+      if(json[i] != ','){ //i != {']' et '"' et ','}
+        ls[j] = ls[j]+json[i];
+      }
+    }
+    i++;
+  }
+  return ls;
 }
-
-
-
-
-

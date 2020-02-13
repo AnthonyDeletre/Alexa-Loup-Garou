@@ -62,15 +62,15 @@ class _LobbyScreenState extends State<LobbyScreen> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: <Widget>[
                                   SizedBox(height: 20.0),
-                                  StreamBuilder<String>(
+                                  StreamBuilder<List<String>>(
                                     stream: manager.joueurList,
                                     builder: (context,snapshot) {
-                                      String listeJoueur = snapshot.data;
+                                      List<String> listeJoueur = snapshot.data;
                                       return ListView.builder(
                                         shrinkWrap: true,
-                                        itemCount: 10,
+                                        itemCount: listeJoueur.length,
                                         itemBuilder: (context, index) {
-                                            return _listItem(context, listeJoueur);            
+                                            return _listItem(context, listeJoueur[index]);            
                                         }
                                       );
                                     }
