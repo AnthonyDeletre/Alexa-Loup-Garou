@@ -16,13 +16,12 @@ class Data {
   Stream<List<String>> get joueurList async*{
     
     final response = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/listejoueur'); 
-
+    
     if(response.statusCode == 200){
       yield listJoueurToString(response.body); 
     }
     else{ 
-      //throw Exception('Failed'); }
-      yield null;}
+      throw Exception('Failed'); }
   }
 }
 
@@ -68,5 +67,6 @@ List<String> listJoueurToString(String json){
     }
     i++;
   }
+  print(ls);
   return ls;
 }
