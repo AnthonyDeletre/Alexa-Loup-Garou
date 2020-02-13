@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class Player {
 
   final int id;
@@ -55,3 +53,4 @@ List<Player> getListPlayer(){
 
   return list;
 }
+

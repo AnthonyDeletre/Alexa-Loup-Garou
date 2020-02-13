@@ -12,7 +12,7 @@ class LobbyScreen extends StatefulWidget {
 class _LobbyScreenState extends State<LobbyScreen> {
 
   final _formKey = GlobalKey<FormState>();
-  final List<Player> players = getListPlayer();
+  Data manager = Data();
   
   @override
   Widget build(BuildContext context){
@@ -53,7 +53,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Container(
-                              height: MediaQuery.of(context).size.height - 100.0,
+                              height: MediaQuery.of(context).size.height,
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.only(topLeft: Radius.circular(40.0), topRight: Radius.circular(40.0))
@@ -62,11 +62,17 @@ class _LobbyScreenState extends State<LobbyScreen> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: <Widget>[
                                   SizedBox(height: 20.0),
-                                  ListView.builder(
-                                    shrinkWrap: true,
-                                    itemCount: players.length,
-                                    itemBuilder: (context, index) {
-                                        return _listItem(context, index);            
+                                  StreamBuilder<String>(
+                                    stream: manager.joueurList,
+                                    builder: (context,snapshot) {
+                                      String listeJoueur = snapshot.data;
+                                      return ListView.builder(
+                                        shrinkWrap: true,
+                                        itemCount: 10,
+                                        itemBuilder: (context, index) {
+                                            return _listItem(context, listeJoueur);            
+                                        }
+                                      );
                                     }
                                   ),
                                   Container(
@@ -119,9 +125,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
   );
   }
 
-  Widget _listItem(BuildContext context, int index){
-
-    String name = players[index].name; 
+  Widget _listItem(BuildContext context, String listeJoueur){
 
     return Padding(
       padding: EdgeInsets.only(top: 20.0),
@@ -140,7 +144,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
                         FadeInState(
                           child: Center(
                             child: Text(
-                              name,
+                              listeJoueur,
                               style: TextStyle(
                                 fontSize: 16.0,
                                 fontWeight: FontWeight.bold

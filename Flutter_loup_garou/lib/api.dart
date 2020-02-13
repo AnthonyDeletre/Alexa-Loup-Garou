@@ -1,37 +1,48 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:flutter/material.dart';
 
-Future<http.Response> postRequest () async {
+class Data {
 
-  var url ='url';
+  Stream<String> get dialogueList async*{
+    
+    final response = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com');
 
-  Map data = {
-    'name': 'value'
-  };
+    if(response.statusCode == 200){ yield response.body; }
+    else{ throw Exception('Failed'); }
+  }
 
-  var body = json.encode(data);
+  Stream<String> get joueurList async*{
+    
+    final response = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/listejoueur'); 
 
-  var response = await http.post(url,
-      headers: {"Content-Type": "application/json"},
-      body: body
-  );
-  print("${response.statusCode}");
-  print("${response.body}");
-
-  return response;
+    if(response.statusCode == 200){
+      Item item = Item.fromJson(json.decode(response.body));
+      yield item.joueurs; 
+    }
+    else{ throw Exception('Failed'); }
+  }
 }
 
-Future<http.Response> getRequest () async {
+Future<bool> connect(String username) async{
   
-  var url ='url';
-
-  var response = await http.get(url,
-      headers: {"Content-Type": "application/json"},
-  );
-
-  print("${response.statusCode}");
-  print("${response.body}");
-
-  return response;
+  final response = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/join/'+ username);
+  
+  if(response.statusCode == 200){ return true; }
+  else{ return false; }
 }
+
+class Item {
+  String joueurs;
+
+  Item({this.joueurs});
+  factory Item.fromJson(dynamic json){
+    return Item(joueurs: json['joueurs'] as String);
+  }
+}
+
+
+
+
+

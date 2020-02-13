@@ -2,6 +2,7 @@ import 'package:flutter_loup_garou/animations/fadeInState.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_loup_garou/data.dart';
+import 'package:flutter_loup_garou/api.dart';
 
 class GameScreen extends StatefulWidget {
   @override
@@ -10,9 +11,10 @@ class GameScreen extends StatefulWidget {
 
 class _GameScreenState extends State<GameScreen> {
   
-  final _formKey = GlobalKey<FormState>();
+  // final _formKey = GlobalKey<FormState>();
   int role = 7; //TODO
   int numeroJoueur = 1;
+  Data manager = Data();
 
   @override
   Widget build(BuildContext context){
@@ -65,12 +67,12 @@ class _GameScreenState extends State<GameScreen> {
                             Container(
                             padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 40.0),
                               child: FadeInState(
-                                child: Text(
-                                "La lune à son apogée, les loups-garous se réveillent la faim au ventre. Ils doivent se mettre d'accord pour tuer quelqu'un afin de survivre.",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16.0
-                                  )
+                                child: StreamBuilder<String>(
+                                  stream: manager.dialogueList,
+                                  builder: (context,snapshot) {
+                                    String text = snapshot.data;
+                                    return Text(text != null ? text : '', style: TextStyle(color: Colors.white,fontSize: 16.0));
+                                  }
                                 ),
                               )
                             )

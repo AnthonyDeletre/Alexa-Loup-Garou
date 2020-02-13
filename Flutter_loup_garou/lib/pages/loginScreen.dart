@@ -11,7 +11,8 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
 
   final _formKey = GlobalKey<FormState>();
-  
+  String _pseudo = '';
+
   @override
   Widget build(BuildContext context){
     return Scaffold(
@@ -31,11 +32,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
+                          SizedBox(height: 10.0),
                           Image(
                             image: AssetImage("assets/images/background.png"),
                             fit: BoxFit.cover
                           ),
-                          SizedBox(height: 10.0),
+                          SizedBox(height: 20.0),
                           Form(
                             key: _formKey,
                             child: Column(
@@ -59,37 +61,38 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                   ),
                                   validator: (value) {
+                                    _pseudo = value;
                                     if (value.isEmpty) {
-                                      return 'Veuillez entrer un numéro de partie';
+                                      return 'Veuillez entrer un pseudo';
                                     }
                                     return null;
                                   },
                                 ),
-                                SizedBox(height: 20.0),
-                                TextFormField(
-                                  style: TextStyle(color: Colors.white, fontSize: 15),
-                                  decoration: InputDecoration(
-                                    prefixIcon: Icon(Icons.arrow_forward_ios, color: Colors.white, size: 15),
-                                    labelText: 'Numéro de partie',
-                                    labelStyle: TextStyle(color: Colors.white),
-                                    fillColor: Colors.white,
-                                    hoverColor: Colors.white,
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.white, width: 1.0),
-                                      borderRadius: BorderRadius.circular(50.0)
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.white, width: 1.0),
-                                      borderRadius: BorderRadius.circular(50.0)
-                                    ),
-                                  ),
-                                  validator: (value) {
-                                    if (value.isEmpty) {
-                                      return 'Veuillez entrer un numéro de partie';
-                                    }
-                                    return null;
-                                  },
-                                ),
+                                SizedBox(height: 10.0),
+                                // TextFormField(
+                                //   style: TextStyle(color: Colors.white, fontSize: 15),
+                                //   decoration: InputDecoration(
+                                //     prefixIcon: Icon(Icons.arrow_forward_ios, color: Colors.white, size: 15),
+                                //     labelText: 'Numéro de partie',
+                                //     labelStyle: TextStyle(color: Colors.white),
+                                //     fillColor: Colors.white,
+                                //     hoverColor: Colors.white,
+                                //     enabledBorder: OutlineInputBorder(
+                                //       borderSide: BorderSide(color: Colors.white, width: 1.0),
+                                //       borderRadius: BorderRadius.circular(50.0)
+                                //     ),
+                                //     focusedBorder: OutlineInputBorder(
+                                //       borderSide: BorderSide(color: Colors.white, width: 1.0),
+                                //       borderRadius: BorderRadius.circular(50.0)
+                                //     ),
+                                //   ),
+                                //   validator: (value) {
+                                //     if (value.isEmpty) {
+                                //       return 'Veuillez entrer un numéro de partie';
+                                //     }
+                                //     return null;
+                                //   },
+                                // ),
                                 SizedBox(height: 30.0),
                                 FadeInState(
                                 child: Container(
@@ -99,13 +102,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                   height: 50.0,
                                   child: InkWell(
-                                    onTap: () {
+                                    onTap: () async {
                                       if (_formKey.currentState.validate()) {
-                                        // postRequest();
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(builder: (context) => LobbyScreen()),
-                                        );
+                                        if(await connect(_pseudo)){
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(builder: (context) => LobbyScreen()),
+                                          );
+                                        }
                                       }
                                     },
                                     child: Padding(
