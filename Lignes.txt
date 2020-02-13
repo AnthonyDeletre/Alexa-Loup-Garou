@@ -40,6 +40,6 @@ Tous le monde est présent ce matin, malgré l'ambiance pesante au village.
 	//Dans tous les cas
 Il faut essayer de démasquer les coupables. Le peuple débat afin de choisir qui pendre aujourd'hui.
 
-Le joueur X a été choisis aujourd'hui. Il est Y.
+Le joueur X a été choisis aujourd'hui. Il était Y.
 	//Se référer au morts
 	//Retourner au début
