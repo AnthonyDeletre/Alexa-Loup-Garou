@@ -46,7 +46,6 @@ Future<bool> connect(String username) async{
 } */
 
 List<String> listJoueurToString(String json){
-  print("test" + json);
   List<String> ls = new List<String>();
   int i=0;
   while(json[i]!='['){
@@ -67,6 +66,5 @@ List<String> listJoueurToString(String json){
     }
     i++;
   }
-  print(ls);
   return ls;
 }
