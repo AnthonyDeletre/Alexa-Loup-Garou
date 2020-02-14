@@ -47,6 +47,7 @@ class Partie:
         self.villageoisVotes = {}  # Non utilisé...
         self.victimes = []
 
+        self.messageStatus = "Aucune partie en cours."
         self.messageSorciere = "Il ne se passe rien."
         self.sorVie = True
         self.sorMort = True
@@ -56,6 +57,7 @@ class Partie:
         self.loupsVotes.clear()
         self.villageoisVotes.clear()
         self.victimes.clear()
+        self.messageStatus = "Aucune partie en cours"
         self.messageSorciere = "Il ne se passe rien."
         self.sorVie = True
         self.sorMort = True
@@ -79,7 +81,7 @@ class Partie:
         return res
 
     def jsonEtatPartie(self):
-        res = {"etat": str(self.partieStatus), "joueursVivants": self.joueursVivants()}
+        res = {"etat": str(self.partieStatus), "joueursVivants": self.joueursVivants(), "joueursRoles": [{"nom": x.nom, "role": x.role.name} for x in self.joueurs], "message": self.messageStatus}
         return res
 
     def listeJoueurs(self):
@@ -108,22 +110,22 @@ class Partie:
         if len(self.joueurs) < 4:
             return {"response": "403",
                     "message": "Pas assez de joueurs. Il manque {} joueurs".format(4 - len(self.joueurs))}
-        elif self.partieStatus != 0:
+        elif self.partieStatus != EtatPartie.OFF:
             return {"response": "403", "message": "Partie déjà commencée"}
         else:
             # Attribution des roles
             loups = 0
             while loups != nbLoups:
-                x = random.randint()
+                x = random.randint(0, len(self.joueurs)-1)
                 if self.joueurs[x].role is None:
                     self.joueurs[x].role = TypeCarte.LOUP
                     loups += 1
             if voyante:
-                x = random.randint()
+                x = random.randint(0, len(self.joueurs)-1)
                 if self.joueurs[x].role is None:
                     self.joueurs[x].role = TypeCarte.VOYANTE
             if chasseur:
-                x = random.randint()
+                x = random.randint(0, len(self.joueurs)-1)
                 if self.joueurs[x].role is None:
                     self.joueurs[x].role = TypeCarte.CHASSEUR
             for x in self.joueurs:
@@ -131,6 +133,7 @@ class Partie:
                     x.role = TypeCarte.VILLAGEOIS
 
             # Debut Partie
+            self.messageStatus = "La partie commence, tout le village s'endort. <break time='2s'/> Dans ce calme plat, la voyante se réveille et scrupte les pensées d'un villageois."
             self.partieStatus = EtatPartie.VOYANTE
             return {"response": "200", "message": "La partie commence."}
 
@@ -147,12 +150,15 @@ class Partie:
             # Si il y a une voyante:
             for x in self.joueurs:
                 if x.vivant == True and x.role == TypeCarte.VOYANTE:
+                    self.messageStatus = "Dans ce calme plat, la voyante se réveille et scrupte les pensées d'un villageois."
                     self.partieStatus = EtatPartie.VOYANTE
                     return
+            self.messageStatus = "La lune à son apogée, les loups-garous se réveillent la faim au ventre. Ils doivent se mettre d'accord pour tuer quelqu'un, afin de survivre."
             self.partieStatus = EtatPartie.LOUPS
             return
 
         if self.partieStatus == EtatPartie.VOYANTE:
+            self.messageStatus = "La lune à son apogée, les loups-garous se réveillent la faim au ventre. Ils doivent se mettre d'accord pour tuer quelqu'un, afin de survivre."
             self.partieStatus = EtatPartie.LOUPS
             return
 
@@ -173,6 +179,8 @@ class Partie:
             for x in self.joueursVivants():
                 if x.vivant == True:
                     self.villageoisVotes[x.nom] = None
+            self.messageStatus = "Le village entier se réveille peu à peu alors que le soleil illumine la place."
+            self.messageStatus += "Vous remarquez tout de suite qu'il manque quelqu'un à l'appel : {} est mort. Il était {}.".format(self.victimes[0].nom, self.victimes[0].role.name)
             self.partieStatus = EtatPartie.JOUR
             return
 
@@ -186,21 +194,18 @@ class Partie:
 
     def voyanteVision(self, joueur):
         # Si la voyante est vivante
-        for x in self.joueurs:
-            if x.role == TypeCarte.VOYANTE and x.vivant == True:
-                if self.partieStatus == EtatPartie.VOYANTE:
-                    for y in self.joueurs:
-                        if y.nom == joueur:
-                            if y.vivant == False:
-                                return {"response": "403", "message": "Ce joueur est mort."}
-                            else:
-                                # Passage a la partie des Loups
-                                self.etapeSuivante()
-
-                                return {"response": "200", "joueur": joueur, "role": y.role.name,
-                                        "message": "Le joueur {} est {}".format(y.nom, y.role.name)}
-                else:
-                    return {"response": "403", "message": "Ce n'est pas le moment de regarder la carte de quelqu'un."}
+        if self.partieStatus == EtatPartie.VOYANTE:
+            for y in self.joueurs:
+                if y.nom == joueur:
+                    if y.vivant == False:
+                        return {"response": "403", "message": "Ce joueur est mort."}
+                    else:
+                        # Passage a la partie des Loups
+                        self.etapeSuivante()
+                        return {"response": "200", "joueur": joueur, "role": y.role.name,
+                                "message": "Le joueur {} est {}".format(y.nom, y.role.name)}
+        else:
+            return {"response": "403", "message": "Ce n'est pas le moment de regarder la carte de quelqu'un."}
 
     def loupsVoter(self, loup, victime):
         if self.partieStatus == EtatPartie.LOUPS:
@@ -323,7 +328,6 @@ def hello_world():
 
 @application.route('/demarrerpartie')
 def demarrerpartie():
-    # heure = datetime.now()
     return partie.debutPartie()
 
 
@@ -341,6 +345,21 @@ def listejoueur():
 def status():
     return partie.jsonEtatPartie()
 
+@application.route("/etatpartie")
+def etatPartie():
+    return partie.etatPartie()
+
+@application.route("/voyante/<joueur>")
+def voyante(joueur):
+    return partie.voyanteVision(joueur)
+
+@application.route("/loupsvote/<joueur>/<victime>")
+def voteLoups(joueur, victime):
+    return partie.loupsVoter(joueur, victime)
+
+@application.route("/villageoisVote/<victime>")
+def voteVillageois(victime):
+    return partie.villageoisVoteAlexa(victime)
 
 @application.route("/reset")
 def reset():
