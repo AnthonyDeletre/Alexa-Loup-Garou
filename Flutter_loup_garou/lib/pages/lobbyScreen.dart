@@ -3,6 +3,7 @@ import 'package:flutter_loup_garou/api.dart';
 import 'package:flutter_loup_garou/data.dart';
 import 'package:flutter_loup_garou/pages/gameScreen.dart';
 import 'package:flutter/material.dart';
+import 'dart:async';
 
 class LobbyScreen extends StatefulWidget {
   @override
@@ -13,12 +14,22 @@ class _LobbyScreenState extends State<LobbyScreen> {
 
   final _formKey = GlobalKey<FormState>();
   Data manager = Data();
+
+  // static final myStream = Data().stream;
+  // final subscription = myStream.listen(
+  //   (data) => print('Data : $data'),
+  //   onError: (err) {
+  //     print('error');
+  //   }
+  // );
   
   @override
   Widget build(BuildContext context){
   return Scaffold(
     backgroundColor: Color.fromRGBO(56, 36, 131, 1.0),
-    body: Container(
+    body: WillPopScope(
+    onWillPop: () async {Future.value(false);},
+    child: Container(
       child: ListView(
         children: <Widget>[
           Row(
@@ -35,15 +46,15 @@ class _LobbyScreenState extends State<LobbyScreen> {
                       children: <Widget>[
                         FadeInState(
                           child: Center(
-                            child: Text(
-                              "Salon",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 25.0
-                                )
-                              ),
+                          child: Text(
+                            "Salon",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 25.0
+                              )
                             ),
+                          ),
                         ),
                         Padding(
                         padding: EdgeInsets.only(top: 20.0),
@@ -70,8 +81,12 @@ class _LobbyScreenState extends State<LobbyScreen> {
                                         padding: EdgeInsets.only(bottom: 60.0),
                                           child: StreamBuilder<List<String>>(
                                             stream: manager.joueurList,
+                                            initialData: [],
                                             builder: (context,snapshot) {
                                               List<String> listeJoueur = snapshot.data;
+                                              if(!snapshot.hasData){
+                                                return CircularProgressIndicator();
+                                              }
                                               return ListView.builder(
                                                 shrinkWrap: true,
                                                 itemCount: listeJoueur.length,
@@ -84,8 +99,9 @@ class _LobbyScreenState extends State<LobbyScreen> {
                                         ),
                                       ),
                                       Positioned(
-                                        bottom: 0.0,
-                                        left: 100.0,
+                                      bottom: 0.0,
+                                      left: 70.0,
+                                      right: 70.0,
                                         child: Container(
                                           child: InkWell(
                                             onTap: () {
@@ -99,15 +115,16 @@ class _LobbyScreenState extends State<LobbyScreen> {
                                               borderRadius: BorderRadius.all(Radius.circular(40.0)),
                                               color: Color.fromRGBO(246, 187, 28, 1.0)
                                               ),
-                                              width: 200.0,
+                                              width: 250.0,
                                               height: 50.0,
                                               child: Center(
                                                 child: Text(
-                                                  'Prêt',
+                                                  '" Alexa ! Lance la partie ! "',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 16,
+                                                  fontStyle: FontStyle.italic
                                                   )
                                                 ),
                                               ),
@@ -134,6 +151,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
         ],
       )
     ),
+    )
   );
   }
 

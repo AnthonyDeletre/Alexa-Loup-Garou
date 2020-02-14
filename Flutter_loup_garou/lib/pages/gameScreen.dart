@@ -20,7 +20,9 @@ class _GameScreenState extends State<GameScreen> {
   Widget build(BuildContext context){
     return Scaffold(
       backgroundColor: Color.fromRGBO(56, 36, 131, 1.0),
-      body: Container(
+      body: WillPopScope(
+      onWillPop: () async {Future.value(false);},
+      child: Container(
         child: ListView(
           children: <Widget>[
             Row(
@@ -87,6 +89,7 @@ class _GameScreenState extends State<GameScreen> {
             ]
           )
         )
+      )
     );
   }
 }

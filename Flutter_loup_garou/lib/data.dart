@@ -39,18 +39,4 @@ class Player {
   Player(this.id, this.name, this.card);
 }
 
-List<Player> getListPlayer(){
-
-  final List<Player> list = new List();
-
-  list.add(new Player(1, 'Joueur 1', 1));
-  list.add(new Player(2, 'Joueur 2', 2));
-  list.add(new Player(3, 'Joueur 3', 3));
-  list.add(new Player(4, 'Joueur 4', 4));
-  list.add(new Player(5, 'Joueur 5', 5));
-  list.add(new Player(6, 'Joueur 6', 6));
-  list.add(new Player(7, 'Joueur 7', 7));
-
-  return list;
-}
 
