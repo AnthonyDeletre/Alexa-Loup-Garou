@@ -69,13 +69,15 @@ class _GameScreenState extends State<GameScreen> {
                             Container(
                             padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 40.0),
                               child: FadeInState(
-                                child: StreamBuilder<String>(
-                                  stream: manager.dialogueList,
-                                  builder: (context,snapshot) {
-                                    String text = snapshot.data;
-                                    return Text(text != null ? text : '', style: TextStyle(color: Colors.white,fontSize: 16.0));
-                                  }
-                                ),
+                                child: Center(
+                                  child: StreamBuilder<String>(
+                                    stream: manager.dialogueList,
+                                    builder: (context,snapshot) {
+                                      String message = snapshot.data;
+                                      return Text(message != null ? message : '', style: TextStyle(color: Colors.white,fontSize: 16.0));
+                                    }
+                                  ),
+                                )
                               )
                             )
                             ]

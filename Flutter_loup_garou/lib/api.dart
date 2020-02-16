@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:io';
+import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 List<String> listeJoueur = new List();
@@ -8,25 +8,50 @@ class Data {
 
   Stream<String> get dialogueList async*{
 
-    
-    final response = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/');
-    // final response = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/status');
+    final response = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/status');
 
-    if(response.statusCode == 200){ yield response.body; /*yield Item.fromJson(response.body);*/ }
+    if(response.statusCode == 200){ 
+
+      var parsedJson = json.decode(response.body);
+      var element = Message.fromJson(parsedJson);
+      yield element.message;
+
+    }
     else{ throw Exception('Failed'); }
   }
+  
+  // Stream<List<String>> get ListJoueur async*{
+  //   Timer.periodic(Duration(seconds: 1), (t){
+  //     return joueurList;
+  //   });
+  // }
 
   Stream<List<String>> get joueurList async*{
     
-    while(true){
-      final response = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/listejoueur'); 
-      if(response.statusCode == 200){
-        yield listJoueurToString(response.body); 
-      }
-      else{ 
-        throw Exception('Failed'); 
-      }
-      sleep(Duration(seconds: 1));
+    // while(true){
+    //   final response = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/listejoueur'); 
+    //   if(response.statusCode == 200){
+    //     yield listJoueurToString(response.body); 
+    //   }
+    //   else{ 
+    //     throw Exception('Failed'); 
+    //   }
+    //   sleep(Duration(seconds: 1));
+    // }
+
+    final response = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/listejoueur'); 
+
+    if(response.statusCode == 200){
+
+      // var parsedJson = json.decode(response.body);
+      // print(parsedJson);
+      // var element = JoueurList.fromJson(parsedJson);
+      // print(element);
+      // yield element.joueurs;
+      yield listJoueurToString(response.body); 
+    }
+    else{ 
+      throw Exception('Failed'); 
     }
   }
 }
@@ -39,15 +64,24 @@ Future<bool> connect(String username) async{
   else{ return false; }
 }
 
-// class Item {
+class Message {
 
-//   String message;
+  String message;
   
-//   Item({this.message});
+  Message({this.message});
   
-//   factory Item.fromJson(dynamic json){
-//     return Item(message: json['message'] as String);
-//   }
+  Message.fromJson(Map<String, dynamic> data)
+      : message = data['message'];
+}
+
+// class JoueurList {
+
+//   List<String> joueurs;
+  
+//   JoueurList({this.joueurs});
+  
+//   JoueurList.fromJson(Map<String, dynamic> data)
+//       : joueurs = data['joueurs'];
 // }
 
 List<String> listJoueurToString(String json){
@@ -73,6 +107,6 @@ List<String> listJoueurToString(String json){
     }
     i++;
   }
-  
+
   return ls;
 }

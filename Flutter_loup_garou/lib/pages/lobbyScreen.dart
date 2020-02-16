@@ -83,9 +83,6 @@ class _LobbyScreenState extends State<LobbyScreen> {
                                             initialData: [],
                                             builder: (context,snapshot) {
                                               List<String> listeJoueur = snapshot.data;
-                                              if(!snapshot.hasData){
-                                                return CircularProgressIndicator();
-                                              }
                                               return ListView.builder(
                                                 shrinkWrap: true,
                                                 itemCount: listeJoueur.length,
