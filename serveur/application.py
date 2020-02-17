@@ -1,7 +1,5 @@
 from flask import Flask
 from datetime import datetime
-# from flask_socketio import SocketIO, emit
-# from flask_socketio import join_room, leave_room
 from enum import Enum
 from markupsafe import escape
 import random
