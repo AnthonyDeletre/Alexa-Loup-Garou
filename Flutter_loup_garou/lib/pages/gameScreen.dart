@@ -18,6 +18,9 @@ class _GameScreenState extends State<GameScreen> {
 
   @override
   Widget build(BuildContext context){
+
+    Data.isGettingList = false;
+    
     return Scaffold(
       backgroundColor: Color.fromRGBO(56, 36, 131, 1.0),
       body: WillPopScope(

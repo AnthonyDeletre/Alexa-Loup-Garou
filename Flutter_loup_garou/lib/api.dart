@@ -2,13 +2,16 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-List<String> listeJoueur = new List();
 int refreshRate = 500; //in ms
 
 class Data {
 
+  static bool isGettingList = true;
+  static bool isGettingDialogue = true;
+
   Stream<String> get dialogueList async*{
-    while(true){
+
+    while(isGettingDialogue){
       final response = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/status');
 
       if(response.statusCode == 200){ 
@@ -17,15 +20,16 @@ class Data {
         String message = parsedJson != null ? parsedJson : "";
 
         yield message;
-      }else{ 
-        throw Exception('Failed');
       }
+      else{ throw Exception('Failed'); }
+
       await Future.delayed(Duration(milliseconds: refreshRate));
     }
   }
 
   Stream<List<String>> get joueurList async*{
-    while(true){
+
+    while(isGettingList){
       final response = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/listejoueur'); 
 
       if(response.statusCode == 200){
@@ -34,9 +38,9 @@ class Data {
         List<String> joueurs = parsedJson != null ? List.from(parsedJson) : "";
 
         yield joueurs;
-      }else{ 
-        throw Exception('Failed'); 
       }
+      else{ throw Exception('Failed'); }
+      
       await Future.delayed(Duration(milliseconds: refreshRate));
     }
   }
