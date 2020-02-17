@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_loup_garou/pages/loginScreen.dart';
-import 'package:flutter_loup_garou/pages/finishScreen.dart';
+// import 'package:flutter_loup_garou/pages/finishScreen.dart';
 
 void main() => runApp(Main());
 
@@ -11,8 +11,8 @@ class Main extends StatelessWidget {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(fontFamily: 'Montserrat'),
-        // home: LoginScreen()
-        home: FinishScreen()
+        home: LoginScreen()
+        // home: FinishScreen()
     );
   }
 }
