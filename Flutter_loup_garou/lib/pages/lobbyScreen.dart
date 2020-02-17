@@ -1,8 +1,9 @@
 import 'package:flutter_loup_garou/animations/fadeInState.dart';
 import 'package:flutter_loup_garou/api.dart';
-import 'package:flutter_loup_garou/pages/gameScreen.dart';
+// import 'package:flutter_loup_garou/pages/gameScreen.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:flutter_loup_garou/pages/voteScreen.dart';
 
 class LobbyScreen extends StatefulWidget {
   @override
@@ -11,7 +12,6 @@ class LobbyScreen extends StatefulWidget {
 
 class _LobbyScreenState extends State<LobbyScreen> {
 
-  final _formKey = GlobalKey<FormState>();
   Data manager = Data();
   
   @override
@@ -19,7 +19,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
   return Scaffold(
     backgroundColor: Color.fromRGBO(56, 36, 131, 1.0),
     body: WillPopScope(
-    onWillPop: () async {Future.value(false);},
+    onWillPop: () async {Future.value(false); return;},
     child: Container(
       child: ListView(
         children: <Widget>[
@@ -95,7 +95,8 @@ class _LobbyScreenState extends State<LobbyScreen> {
                                             onTap: () {
                                               Navigator.push(
                                                 context,
-                                                MaterialPageRoute(builder: (context) => GameScreen()),
+                                                MaterialPageRoute(builder: (context) => VoteScreen()),
+                                                // MaterialPageRoute(builder: (context) => GameScreen()),
                                               );
                                             },
                                             child: Container(

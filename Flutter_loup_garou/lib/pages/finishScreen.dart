@@ -13,15 +13,15 @@ class FinishScreen extends StatefulWidget {
 
 class _FinishScreenState extends State<FinishScreen> {
 
-  Data manager = Data();
   String _animation = "trophy_success";
+  String name = "loups";
 
   @override
   Widget build(BuildContext context){
   return Scaffold(
     backgroundColor: Color.fromRGBO(56, 36, 131, 1.0),
     body: WillPopScope(
-    onWillPop: () async {Future.value(false);},
+    onWillPop: () async {Future.value(false); return;},
     child: Container(
       child: ListView(
         children: <Widget>[
@@ -80,7 +80,7 @@ class _FinishScreenState extends State<FinishScreen> {
                                   FadeInState(
                                     child: Center(
                                     child: Text(
-                                      "Les <nom du groupe> ont gagnés !",
+                                      "Les" + name + "ont gagnés !",
                                       style: TextStyle(
                                         color: Colors.black,
                                         fontWeight: FontWeight.bold,

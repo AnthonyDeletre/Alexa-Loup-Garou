@@ -10,9 +10,8 @@ class GameScreen extends StatefulWidget {
 }
 
 class _GameScreenState extends State<GameScreen> {
-  
-  // final _formKey = GlobalKey<FormState>();
-  int role = 7; //TODO
+
+  int role = 7;
   int numeroJoueur = 1;
   Data manager = Data();
 
@@ -24,7 +23,7 @@ class _GameScreenState extends State<GameScreen> {
     return Scaffold(
       backgroundColor: Color.fromRGBO(56, 36, 131, 1.0),
       body: WillPopScope(
-      onWillPop: () async {Future.value(false);},
+      onWillPop: () async {Future.value(false); return;},
       child: Container(
         child: ListView(
           children: <Widget>[

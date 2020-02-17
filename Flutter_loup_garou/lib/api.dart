@@ -8,10 +8,12 @@ class Data {
 
   static bool isGettingList = true;
   static bool isGettingDialogue = true;
+  static int nbJoueur = 0;
 
   Stream<String> get dialogueList async*{
 
     while(isGettingDialogue){
+
       final response = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/status');
 
       if(response.statusCode == 200){ 
@@ -30,17 +32,19 @@ class Data {
   Stream<List<String>> get joueurList async*{
 
     while(isGettingList){
+      
       final response = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/listejoueur'); 
 
       if(response.statusCode == 200){
 
         var parsedJson = jsonDecode(response.body)['joueurs'];
         List<String> joueurs = parsedJson != null ? List.from(parsedJson) : "";
+        nbJoueur = joueurs.length;
 
         yield joueurs;
       }
       else{ throw Exception('Failed'); }
-      
+
       await Future.delayed(Duration(milliseconds: refreshRate));
     }
   }
