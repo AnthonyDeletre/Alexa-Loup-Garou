@@ -39,6 +39,15 @@ class _GameScreenState extends State<GameScreen> {
                           children: <Widget>[
                             Center(
                               child: Text(
+                                "Pseudo",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16
+                                )
+                              ),
+                            ),
+                            Center(
+                              child: Text(
                                 "Joueur "+ numeroJoueur.toString(),
                                 style: TextStyle(
                                   color: Colors.white,
