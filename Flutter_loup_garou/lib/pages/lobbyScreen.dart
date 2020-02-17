@@ -14,13 +14,13 @@ class _LobbyScreenState extends State<LobbyScreen> {
   final _formKey = GlobalKey<FormState>();
   Data manager = Data();
 
-  // static final myStream = Data().stream;
-  // final subscription = myStream.listen(
-  //   (data) => print('Data : $data'),
-  //   onError: (err) {
-  //     print('error');
-  //   }
-  // );
+  Stream<List<String>> getListJoueur() async{
+    var controller = StreamController<List<String>>();
+    Timer.periodic(Duration(seconds: 1), (t){
+      
+    });
+    return controller.stream;
+  }
   
   @override
   Widget build(BuildContext context){
