@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 List<String> listeJoueur = new List();
+int refreshRate = 500; //in ms
 
 class Data {
 
@@ -12,14 +13,14 @@ class Data {
 
       if(response.statusCode == 200){ 
 
-        var parsedJson = json.decode(response.body);
-        var element = Message.fromJson(parsedJson);
-        yield element.message;
+        var parsedJson = jsonDecode(response.body)['message'];
+        String message = parsedJson != null ? parsedJson : "";
 
+        yield message;
       }else{ 
         throw Exception('Failed');
       }
-      await Future.delayed(Duration(seconds: 1));
+      await Future.delayed(Duration(milliseconds: refreshRate));
     }
   }
 
@@ -28,13 +29,15 @@ class Data {
       final response = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/listejoueur'); 
 
       if(response.statusCode == 200){
-        print(listJoueurToString(response.body));
-        yield listJoueurToString(response.body); 
-      }
-      else{ 
+
+        var parsedJson = jsonDecode(response.body)['joueurs'];
+        List<String> joueurs = parsedJson != null ? List.from(parsedJson) : "";
+
+        yield joueurs;
+      }else{ 
         throw Exception('Failed'); 
       }
-      await Future.delayed(Duration(seconds: 1));
+      await Future.delayed(Duration(milliseconds: refreshRate));
     }
   }
 }
@@ -45,51 +48,4 @@ Future<bool> connect(String username) async{
   
   if(response.statusCode == 200){ return true; }
   else{ return false; }
-}
-
-class Message {
-
-  String message;
-  
-  Message({this.message});
-  
-  Message.fromJson(Map<String, dynamic> data)
-      : message = data['message'];
-}
-
-// class JoueurList {
-
-//   List<String> joueurs;
-  
-//   JoueurList({this.joueurs});
-  
-//   JoueurList.fromJson(Map<String, dynamic> data)
-//       : joueurs = data['joueurs'];
-// }
-
-List<String> listJoueurToString(String json){
-
-  List<String> ls = new List<String>();
-  int i=0;
-  int j=-1;
-
-  while(json[i]!='['){
-    i++;
-  }
-  i++;
-  
-  while(json[i]!=']'){
-
-    if(json[i]=='"'){
-      if(json[i+1] != ',' && json[i+1] != ']'){
-        ls.add("");
-        j++;
-      }
-    }else if(json[i] != ','){
-      ls[j] = ls[j]+json[i];
-    }
-    i++;
-  }
-
-  return ls;
 }
