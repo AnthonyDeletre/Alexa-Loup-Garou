@@ -7,28 +7,34 @@ List<String> listeJoueur = new List();
 class Data {
 
   Stream<String> get dialogueList async*{
+    while(true){
+      final response = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/status');
 
-    final response = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/status');
+      if(response.statusCode == 200){ 
 
-    if(response.statusCode == 200){ 
+        var parsedJson = json.decode(response.body);
+        var element = Message.fromJson(parsedJson);
+        yield element.message;
 
-      var parsedJson = json.decode(response.body);
-      var element = Message.fromJson(parsedJson);
-      yield element.message;
-
+      }else{ 
+        throw Exception('Failed');
+      }
+      await Future.delayed(Duration(seconds: 1));
     }
-    else{ throw Exception('Failed'); }
   }
 
   Stream<List<String>> get joueurList async*{
+    while(true){
+      final response = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/listejoueur'); 
 
-    final response = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/listejoueur'); 
-
-    if(response.statusCode == 200){
-      yield listJoueurToString(response.body); 
-    }
-    else{ 
-      throw Exception('Failed'); 
+      if(response.statusCode == 200){
+        print(listJoueurToString(response.body));
+        yield listJoueurToString(response.body); 
+      }
+      else{ 
+        throw Exception('Failed'); 
+      }
+      await Future.delayed(Duration(seconds: 1));
     }
   }
 }
