@@ -1,6 +1,6 @@
 import 'package:flutter_loup_garou/animations/fadeInState.dart';
 import 'package:flutter_loup_garou/api.dart';
-// import 'package:flutter_loup_garou/pages/gameScreen.dart';
+import 'package:flutter_loup_garou/pages/gameScreen.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter_loup_garou/pages/voteScreen.dart';
@@ -13,6 +13,7 @@ class LobbyScreen extends StatefulWidget {
 class _LobbyScreenState extends State<LobbyScreen> {
 
   Data manager = Data();
+  
   @override
   Widget build(BuildContext context){
   return Scaffold(
@@ -94,8 +95,8 @@ class _LobbyScreenState extends State<LobbyScreen> {
                                             onTap: () {
                                               Navigator.push(
                                                 context,
-                                                MaterialPageRoute(builder: (context) => VoteScreen()),
-                                                // MaterialPageRoute(builder: (context) => GameScreen()),
+                                                // MaterialPageRoute(builder: (context) => VoteScreen()),
+                                                MaterialPageRoute(builder: (context) => GameScreen()),
                                               );
                                             },
                                             child: Container(

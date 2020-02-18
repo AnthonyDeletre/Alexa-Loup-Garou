@@ -11,10 +11,7 @@ class GameScreen extends StatefulWidget {
 
 class _GameScreenState extends State<GameScreen> {
 
-  int role = 7;
-  int numeroJoueur = 1;
   Data manager = Data();
-  List<Player> listeJoueurs = new List<Player>();
 
   @override
   Widget build(BuildContext context){
@@ -42,7 +39,7 @@ class _GameScreenState extends State<GameScreen> {
                           children: <Widget>[
                             Center(
                               child: Text(
-                                "Pseudo",
+                                Data.joueurCourant.nom,
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 16
@@ -51,7 +48,7 @@ class _GameScreenState extends State<GameScreen> {
                             ),
                             Center(
                               child: Text(
-                                "Joueur "+ numeroJoueur.toString(),
+                                "Joueur "+ Data.joueurCourant.id,
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
@@ -71,7 +68,13 @@ class _GameScreenState extends State<GameScreen> {
                                         child: Image(image: AssetImage(Player.idCarteToChemin(0)), fit: BoxFit.cover),
                                     ),
                                     back: Container(
-                                        child: Image(image: AssetImage(Player.idCarteToChemin(role)), fit: BoxFit.cover),
+                                      child: Image(
+                                        image: AssetImage(
+                                          // Player.idCarteToChemin(int.parse(Data.joueurCourant.role) == null ? int.parse(Data.joueurCourant.role) : 7)
+                                           Player.idCarteToChemin(7)
+                                        ), 
+                                        fit: BoxFit.cover
+                                      ),
                                     ),
                                   ),
                                   )

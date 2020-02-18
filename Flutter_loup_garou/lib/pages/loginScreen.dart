@@ -11,6 +11,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
 
   final _formKey = GlobalKey<FormState>();
+  Data manager = Data();
   String _pseudo = '';
 
   @override
@@ -104,7 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   child: InkWell(
                                     onTap: () async {
                                       if (_formKey.currentState.validate()) {
-                                        if(await connect(_pseudo)){
+                                        if(await manager.connect(_pseudo)){
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(builder: (context) => LobbyScreen()),
