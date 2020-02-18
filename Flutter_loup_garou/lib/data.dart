@@ -2,7 +2,10 @@ class Player {
 
   final int id;
   final String name;
-  final int card;
+  final int role;
+  bool isMort;
+
+  Player(this.id, this.name, this.role);
 
   static String idCarteToChemin(int role){
     switch(role){
@@ -36,7 +39,6 @@ class Player {
     }
   }
   
-  Player(this.id, this.name, this.card);
 }
 
 

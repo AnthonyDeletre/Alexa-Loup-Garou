@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+import 'data.dart';
+
 int refreshRate = 500; //in ms
 
 class Data {
@@ -48,6 +50,23 @@ class Data {
       await Future.delayed(Duration(milliseconds: refreshRate));
     }
   }
+
+  static void getEtatJoueurs() async{
+    final response = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/status'); 
+
+      if(response.statusCode == 200){
+        print('json');
+        var parsedJson = jsonDecode(response.body)['joueurs'];
+        List<String> joueurs = parsedJson != null ? List.from(parsedJson) : "";
+        print('json2');
+        for(int i=0;i<joueurs.length;i++){
+          print(joueurs[i]);
+        }
+        nbJoueur = joueurs.length;
+      }
+      else{throw Exception('Failed'); }
+  }
+
 }
 
 Future<bool> connect(String username) async{
@@ -57,3 +76,4 @@ Future<bool> connect(String username) async{
   if(response.statusCode == 200){ return true; }
   else{ return false; }
 }
+

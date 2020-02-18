@@ -14,6 +14,7 @@ class _GameScreenState extends State<GameScreen> {
   int role = 7;
   int numeroJoueur = 1;
   Data manager = Data();
+  List<Player> listeJoueurs = new List<Player>();
 
   @override
   Widget build(BuildContext context){

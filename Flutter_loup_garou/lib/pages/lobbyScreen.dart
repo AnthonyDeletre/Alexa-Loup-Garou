@@ -13,7 +13,6 @@ class LobbyScreen extends StatefulWidget {
 class _LobbyScreenState extends State<LobbyScreen> {
 
   Data manager = Data();
-  
   @override
   Widget build(BuildContext context){
   return Scaffold(
