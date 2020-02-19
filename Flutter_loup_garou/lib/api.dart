@@ -22,6 +22,7 @@ class Data {
 
   static bool isGettingList = true;
   static bool isGettingDialogue = true;
+  static bool isGettingVote = true;
   static int nbJoueur = 0;
   static List<Joueur> detailListJoueur;
   static Joueur joueurCourant = new Joueur(null, null, null, null);
@@ -67,6 +68,21 @@ class Data {
           
           print(demarrer.statusCode);
           var responseStatus = jsonDecode(response.body)['response'];
+  
+          /*
+          final status = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/status');
+
+          if(status.statusCode == 200){
+        
+            var parsedJson = jsonDecode(status.body)['etat'] as String;        
+            if(parsedJson != 'EtatPartie.OFF'){
+              Navigator.push(
+              getContext(),
+              MaterialPageRoute(builder: (context) => GameScreen()),
+              );
+            }
+          */
+
 
           if(responseStatus == "202"){
             Navigator.push(
@@ -117,11 +133,9 @@ class Data {
     joueurCourant.nom = username;
   }
 
-  Future<bool> isPhaseVote(int role) async{
+  Future<bool> isPhaseVote(String role) async{
 
-    bool response = false; 
-
-    while(!response){
+    while(isGettingVote){
 
       final status = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/status');
 
@@ -131,10 +145,19 @@ class Data {
         print('phase : '+ parsedJson);
 
         switch(parsedJson){
-          case 'EtatPartie.OFF' :
+          case 'EtatPartie.VOYANTE' :
+            if(role == 'VOYANTE'){
+              return true;
+            }
+          break;
+          case '' ://todo ajouter les phases de jeu et selon le role, renvoyer si on vote ou pas
+            if(role == 'LOUP'){
+              return true;
+            }
+            break;
+          default :
             return false;
             break;
-            //todo ajouter les phases de jeu et selon le role, renvoyer si on vote ou pas
         }
       }
       else{ throw Exception('Failed'); }
@@ -142,7 +165,7 @@ class Data {
       Future.delayed(Duration(seconds: 2));
     }
 
-    return null;
+    return false;
   }
 
     Future<String> doVote(String role, int choix) async{ //seul la voyante et les loups garous sont à gerer ( voir la sorciere )
