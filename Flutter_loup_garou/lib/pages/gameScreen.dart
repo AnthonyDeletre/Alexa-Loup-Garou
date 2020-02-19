@@ -1,7 +1,6 @@
 import 'package:flutter_loup_garou/animations/fadeInState.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_loup_garou/data.dart';
 import 'package:flutter_loup_garou/api.dart';
 
 class GameScreen extends StatefulWidget {
@@ -12,11 +11,12 @@ class GameScreen extends StatefulWidget {
 class _GameScreenState extends State<GameScreen> {
 
   Data manager = Data();
-
+  
   @override
   Widget build(BuildContext context){
 
     Data.isGettingList = false;
+    manager.updateCurrentUser(); // Mise a jour des informations du joueur courant
     
     return Scaffold(
       backgroundColor: Color.fromRGBO(56, 36, 131, 1.0),
@@ -65,13 +65,12 @@ class _GameScreenState extends State<GameScreen> {
                                   child: FlipCard(
                                     direction: FlipDirection.HORIZONTAL,
                                     front: Container(
-                                        child: Image(image: AssetImage(Player.idCarteToChemin(0)), fit: BoxFit.cover),
+                                        child: Image(image: AssetImage(Joueur.idCarteToChemin("")), fit: BoxFit.cover),
                                     ),
                                     back: Container(
                                       child: Image(
                                         image: AssetImage(
-                                          // Player.idCarteToChemin(int.parse(Data.joueurCourant.role) == null ? int.parse(Data.joueurCourant.role) : 7)
-                                           Player.idCarteToChemin(7)
+                                           Joueur.idCarteToChemin(Data.joueurCourant.role)
                                         ), 
                                         fit: BoxFit.cover
                                       ),

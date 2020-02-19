@@ -10,7 +10,7 @@ class Data {
   static bool isGettingDialogue = true;
   static int nbJoueur = 0;
   static List<Joueur> detailListJoueur;
-  static Joueur joueurCourant;
+  static Joueur joueurCourant = new Joueur(null, null, null, null);
 
   Stream<String> get dialogueList async*{
 
@@ -56,28 +56,31 @@ class Data {
     final response = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/join/'+ username);
     
     if(response.statusCode == 200){ 
-
-      final status = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/status');
-
-      var parsedJson = jsonDecode(status.body)['joueurs'] as List;
-      detailListJoueur = parsedJson.map((jsonObj) => Joueur.fromJson(jsonObj)).toList();
-      setCurrentUser(username); // Sauvegarde le joueur courant
-
-      return true;
+      setCurrentUsername(username); // Sauvegarde le nom du joueur
+      return true; 
     }
     else{ return false; }
   }
 
-  void setCurrentUser(String username){
+  void updateCurrentUser() async{
+  
+    final status = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/status');
+
+    var parsedJson = jsonDecode(status.body)['joueurs'] as List;
+    detailListJoueur = parsedJson.map((jsonObj) => Joueur.fromJson(jsonObj)).toList();
 
     for (Joueur j in detailListJoueur) {
-      if(j.nom == username){ joueurCourant = j;}
+      if(j.nom == joueurCourant.nom){ 
+        joueurCourant = j; 
+        break;
+      }
     }
   }
 
+  void setCurrentUsername(String username){
+    joueurCourant.nom = username;
+  }
 }
-
-
 
 class Joueur {
 
@@ -95,6 +98,39 @@ class Joueur {
   @override
   String toString() {
     return '{ ${this.id}, ${this.nom}, ${this.role}; ${this.vivant} }';
+  }
+
+  static String idCarteToChemin(String role){
+
+    switch(role){
+      case "VILLAGEOIS":
+        return "assets/images/cards/villager.png";
+        break;
+      case "LOUP":
+        return "assets/images/cards/wolf.png";
+        break;
+      case "CUPIDON":
+        return "assets/images/cards/cupidon.png";
+        break;
+      case "FILLE":
+        return "assets/images/cards/girl.png";
+        break;
+      case "CHASSEUR":
+        return "assets/images/cards/hunter.png";
+        break;
+      case "VOLEUR":
+        return "assets/images/cards/thief.png";
+        break;
+      case "SORCIERE":
+        return "assets/images/cards/witch.png";
+        break;
+      case "VOYANTE":
+        return "assets/images/cards/seer.png";
+        break;
+      default:
+        return "assets/images/cards/back.png";
+        break;
+    }
   }
 }
 
