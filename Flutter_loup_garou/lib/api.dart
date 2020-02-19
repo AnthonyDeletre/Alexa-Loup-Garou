@@ -97,15 +97,19 @@ class Data {
             break;
             //TODO ajouter les phases de jeu et selon le role, renvoyer si on vote ou pas
         }
-      }else{
-        throw Exception('Failed'); }
+      }
+      else{ throw Exception('Failed'); }
+      
       Future.delayed(Duration(seconds: 2));
     }
+
     return null;
   }
 
     Future<String> doVote(int role, int choix) async{//seul la voyante et les loups garous sont à gerer ( voir la sorciere )
+
       switch(role){ //TODO à changer pour le numéro de role du joueur
+
         case -1 : //Voyante
           final response = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/voyante/'+choix.toString());
 
@@ -114,10 +118,10 @@ class Data {
             var parsedJson = jsonDecode(response.body)['message'] as String;
             print('phase : '+parsedJson);
             return parsedJson;
-          }else{
-            throw Exception('Failed'); 
           }
+          else{ throw Exception('Failed'); }
           break;
+
         case -1:  //loup-garou
           final response = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/');//TODO get API parce que j'ai oublié l'appel
 
@@ -127,10 +131,10 @@ class Data {
             print('phase : '+parsedJson);
             return parsedJson;
 
-          }else{
-            throw Exception('Failed'); 
           }
+          else{ throw Exception('Failed'); }
           break;
+          
         default:
           return null;
           break;
