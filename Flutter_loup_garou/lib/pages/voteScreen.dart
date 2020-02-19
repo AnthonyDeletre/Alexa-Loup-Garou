@@ -36,7 +36,7 @@ class _VoteScreenState extends State<VoteScreen> {
                           children: <Widget>[
                             Center(
                               child: Text(
-                                "Qui est vote choix ?",
+                                "Qui est votre choix ?",
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
