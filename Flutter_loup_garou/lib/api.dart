@@ -1,8 +1,22 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_loup_garou/pages/gameScreen.dart';
+import 'package:overlay_support/overlay_support.dart';
+import 'package:flare_flutter/flare_actor.dart';
 
 int refreshRate = 500; //in ms
+
+BuildContext mainContext;
+
+BuildContext getContext(){
+  return mainContext;
+}
+
+void setContext(BuildContext context){
+  mainContext = context;
+}
 
 class Data {
 
@@ -33,6 +47,8 @@ class Data {
 
   Stream<List<String>> get joueurList async*{
 
+    bool countNotif = false;
+
     while(isGettingList){
       
       final response = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/listejoueur'); 
@@ -44,6 +60,26 @@ class Data {
         nbJoueur = joueurs.length;
 
         yield joueurs;
+
+        if(nbJoueur >= 4){
+
+          final demarrer = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/demarrerpartie'); 
+          
+          print(demarrer.statusCode);
+          var responseStatus = jsonDecode(response.body)['response'];
+
+          if(responseStatus == "202"){
+            Navigator.push(
+              getContext(),
+              MaterialPageRoute(builder: (context) => GameScreen()),
+            );
+          }
+          else if(!countNotif){
+            showNotification('Une partie est déja en cour !');
+          }
+        }
+
+        countNotif = true;
       }
       else{ throw Exception('Failed'); }
 
@@ -146,6 +182,44 @@ class Data {
     
 }
 
+void showNotification(String text){
+
+  showOverlayNotification((context) {
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 4),
+      child: SafeArea(
+        child: ListTile(
+          leading: SizedBox.fromSize(
+          size: const Size(50, 50),
+          child: Icon(
+              Icons.notifications_active,
+              color: Color.fromRGBO(56, 36, 131, 1.0),
+              size: 30,
+            ),
+          ),
+          title: Text('Notificaton'),
+          subtitle: Text(text),
+          trailing: InkWell(
+            onTap: (){
+              OverlaySupportEntry.of(context).dismiss();
+            },
+            child: Container(
+              width: 50.0,
+              height: 50.0,
+              child: FlareActor(
+                "assets/images/cross.flr", 
+                animation: "Error",
+                alignment: Alignment.center,
+                fit: BoxFit.contain,
+              ),
+            ),
+          )
+        ),
+      ),
+    );
+  }, duration: Duration(seconds: 30));
+}
+
 class Joueur {
 
   String id;
@@ -197,4 +271,6 @@ class Joueur {
     }
   }
 }
+
+
 

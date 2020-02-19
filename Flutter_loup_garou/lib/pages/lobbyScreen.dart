@@ -1,4 +1,5 @@
 import 'package:flutter_loup_garou/animations/fadeInState.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:flutter_loup_garou/api.dart';
 import 'package:flutter_loup_garou/pages/gameScreen.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,9 @@ class _LobbyScreenState extends State<LobbyScreen> {
   
   @override
   Widget build(BuildContext context){
+  
+  setContext(context);
+
   return Scaffold(
     backgroundColor: Color.fromRGBO(56, 36, 131, 1.0),
     body: WillPopScope(
