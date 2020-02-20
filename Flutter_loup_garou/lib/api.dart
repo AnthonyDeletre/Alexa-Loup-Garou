@@ -48,8 +48,10 @@ class Data {
 
   Stream<List<String>> get joueurList async*{
 
+    bool countNotif = false;
+
     while(isGettingList){
-      
+
       final response = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/listejoueur'); 
 
       if(response.statusCode == 200){
@@ -59,30 +61,47 @@ class Data {
         nbJoueur = joueurs.length;
 
         yield joueurs;
+      }
 
-        if(nbJoueur >= 4){
+      final status = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/status');
 
-          final status = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/status');
-
-          if(status.statusCode == 200){
+        if(status.statusCode == 200){
         
-            var etat = jsonDecode(status.body)['etat'] as String;        
+          var etat = jsonDecode(status.body)['etat'] as String;   
+          
+          if(etat == 'EtatPartie.OFF'){
+            while(etat == 'EtatPartie.OFF'){
 
-            if(etat == 'EtatPartie.OFF'){
-              while(etat == 'EtatPartie.OFF'){
-                Future.delayed(Duration(seconds: 1));
+              final response = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/listejoueur'); 
+
+              if(response.statusCode == 200){
+
+                var parsedJson = jsonDecode(response.body)['joueurs'];
+                List<String> joueurs = parsedJson != null ? List.from(parsedJson) : "";
+                nbJoueur = joueurs.length;
+
+                yield joueurs;
               }
-              Navigator.push(
+
+              final status = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/status');
+
+              if(status.statusCode == 200){
+        
+                etat = jsonDecode(status.body)['etat'] as String;   
+              }
+              await Future.delayed(Duration(milliseconds: refreshRate));
+            }
+            Navigator.push(
               getContext(),
               MaterialPageRoute(builder: (context) => GameScreen()),
               );
-            }else{
+          }else{
+            if(!countNotif){
+              countNotif = !countNotif;
               showNotification('Une partie est déja en cours !');
             }
           }
         }
-      }
-      await Future.delayed(Duration(milliseconds: refreshRate));
     }
   }
 
