@@ -49,7 +49,7 @@ class _VoteScreenState extends State<VoteScreen> {
                             ListView.builder(
                               primary: false,
                               shrinkWrap: true,
-                              itemCount: Data.detailListJoueur.length,
+                              itemCount: manager.listMinusSelf(Data.detailListJoueur,Data.joueurCourant).length,
                               itemBuilder: (context, index) {
                                 return FadeInState(
                                   child: Container(
@@ -67,7 +67,7 @@ class _VoteScreenState extends State<VoteScreen> {
                                         height: 50.0,
                                         child: Center(
                                           child: Text(
-                                            Data.detailListJoueur[index].nom,
+                                            manager.listMinusSelf(Data.detailListJoueur,Data.joueurCourant).nom,
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                             color: Colors.white,

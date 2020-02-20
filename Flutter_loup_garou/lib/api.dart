@@ -264,6 +264,17 @@ void showNotification(String text){
       ),
     );
   }, duration: Duration(seconds: 30));
+
+  
+  List<Joueur> listMinusSelf(List<Joueur> lP, Joueur self){
+    List<Joueur> lJ = List<Joueur>();
+    for(int i=0;i<lP.length;i++){
+      if(lP[i].nom!=joueurCourant.nom){
+        lJ.add(lP[i]);
+      }
+    }
+    return lJ;
+  }
 }
 
 class Joueur {

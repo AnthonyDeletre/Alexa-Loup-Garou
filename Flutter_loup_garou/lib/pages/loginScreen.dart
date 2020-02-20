@@ -38,7 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             image: AssetImage("assets/images/background.png"),
                             fit: BoxFit.cover
                           ),
-                          SizedBox(height: 20.0),
+                          SizedBox(height: 40.0),
                           Form(
                             key: _formKey,
                             child: Column(
@@ -69,31 +69,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                     return null;
                                   },
                                 ),
-                                SizedBox(height: 10.0),
-                                // TextFormField(
-                                //   style: TextStyle(color: Colors.white, fontSize: 15),
-                                //   decoration: InputDecoration(
-                                //     prefixIcon: Icon(Icons.arrow_forward_ios, color: Colors.white, size: 15),
-                                //     labelText: 'Numéro de partie',
-                                //     labelStyle: TextStyle(color: Colors.white),
-                                //     fillColor: Colors.white,
-                                //     hoverColor: Colors.white,
-                                //     enabledBorder: OutlineInputBorder(
-                                //       borderSide: BorderSide(color: Colors.white, width: 1.0),
-                                //       borderRadius: BorderRadius.circular(50.0)
-                                //     ),
-                                //     focusedBorder: OutlineInputBorder(
-                                //       borderSide: BorderSide(color: Colors.white, width: 1.0),
-                                //       borderRadius: BorderRadius.circular(50.0)
-                                //     ),
-                                //   ),
-                                //   validator: (value) {
-                                //     if (value.isEmpty) {
-                                //       return 'Veuillez entrer un numéro de partie';
-                                //     }
-                                //     return null;
-                                //   },
-                                // ),
                                 SizedBox(height: 30.0),
                                 FadeInState(
                                 child: Container(
