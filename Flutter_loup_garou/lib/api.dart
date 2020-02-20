@@ -70,6 +70,7 @@ class Data {
           var etat = jsonDecode(status.body)['etat'] as String;   
           
           if(etat == 'EtatPartie.OFF'){
+            countNotif = !countNotif;
             while(etat == 'EtatPartie.OFF'){
 
               final response = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/listejoueur'); 
