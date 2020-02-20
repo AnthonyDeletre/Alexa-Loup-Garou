@@ -64,35 +64,25 @@ class Data {
 
         if(nbJoueur >= 4){
 
-          final demarrer = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/demarrerpartie'); 
-          
-          print(demarrer.statusCode);
-          var responseStatus = jsonDecode(response.body)['response'];
-  
-          /*
           final status = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/status');
 
           if(status.statusCode == 200){
         
-            var parsedJson = jsonDecode(status.body)['etat'] as String;        
-            if(parsedJson != 'EtatPartie.OFF'){
+            var etat = jsonDecode(status.body)['etat'] as String;        
+
+            if(!countNotif && etat != 'EtatPartie.OFF'){
+              showNotification('Une partie est déja en cours !');
+            }
+            if(etat != 'EtatPartie.OFF'){
               Navigator.push(
               getContext(),
               MaterialPageRoute(builder: (context) => GameScreen()),
               );
             }
-          */
-
-
-          if(responseStatus == "202"){
-            Navigator.push(
-              getContext(),
-              MaterialPageRoute(builder: (context) => GameScreen()),
-            );
           }
-          else if(!countNotif){
-            showNotification('Une partie est déja en cour !');
-          }
+        }
+        else if(!countNotif){
+          showNotification('Il manque encore des joueurs !');
         }
 
         countNotif = true;
