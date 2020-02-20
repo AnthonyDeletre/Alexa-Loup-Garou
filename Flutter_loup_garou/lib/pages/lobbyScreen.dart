@@ -3,6 +3,7 @@ import 'package:flutter_loup_garou/api.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter_loup_garou/pages/voteScreen.dart';
+import 'package:flutter_loup_garou/pages/deathScreen.dart';
 
 class LobbyScreen extends StatefulWidget {
   @override
@@ -96,7 +97,8 @@ class _LobbyScreenState extends State<LobbyScreen> {
                                             onTap: () {
                                               Navigator.push(
                                                 context,
-                                                MaterialPageRoute(builder: (context) => VoteScreen()),
+                                                MaterialPageRoute(builder: (context) => DeathScreen()),
+                                                // MaterialPageRoute(builder: (context) => VoteScreen()),
                                                 // MaterialPageRoute(builder: (context) => GameScreen()),
                                               );
                                             },

@@ -2,11 +2,12 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_loup_garou/pages/voteScreen.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter_loup_garou/pages/deathScreen.dart';
 import 'package:flutter_loup_garou/pages/gameScreen.dart';
 import 'package:flutter_loup_garou/pages/finishScreen.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:flare_flutter/flare_actor.dart';
+import 'package:http/http.dart' as http;
 
 int refreshRate = 500; //in ms
 // BuildContext context;
@@ -34,37 +35,50 @@ class Data {
 
         yield messageConvert;
 
-        var etat = jsonDecode(response.body)['etat'];
+        updateCurrentUser(); // Met à jour les détails du joueur
 
-        if(etat == "EtatPartie.VOYANTE"){
+        await Future.delayed(Duration(seconds: 20)); // Attente de 20 secondes avant le vote
+        
+        if(joueurCourant.vivant == "True"){
+          
+          var etat = jsonDecode(response.body)['etat'];
 
-          isPhaseVote("VOYANTE", context);
-        }    
+          if(etat == "EtatPartie.VOYANTE" && joueurCourant.role == "VOYANTE"){
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => VoteScreen()),
+            );
+          }    
+          if(etat == "EtatPartie.LOUPS" && joueurCourant.role == "LOUP"){
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => VoteScreen()),
+            );
+          }    
+          if(etat == "EtatPartie.VICTOIRE_VILLAGEOIS"){
+            String value = "Villageois";
 
-        if(etat == "EtatPartie.LOUP"){
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => FinishScreen(value: value)),
+            );
+          }
+          if(etat == "EtatPartie.VICTOIRE_LOUPS"){
+            String value = "Loups";
 
-          isPhaseVote("LOUP", context);
-        }    
-
-        if(etat == "EtatPartie.VICTOIRE_VILLAGEOIS"){
-
-          String value = "Villageois";
-
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => FinishScreen(value: value)),
+            );
+          }
+        }
+        else{
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => FinishScreen(value: value)),
+            MaterialPageRoute(builder: (context) => DeathScreen()),
           );
         }
-
-        if(etat == "EtatPartie.VICTOIRE_LOUPS"){
-
-          String value = "Loups";
-
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => FinishScreen(value: value)),
-          );
-        }
+        
       }
       else{ throw Exception('Failed'); }
 
@@ -158,56 +172,17 @@ class Data {
         break;
       }
     }
+
+    detailListJoueur.remove(joueurCourant.id);
   }
 
   void setCurrentUsername(String username){
     joueurCourant.nom = username;
   }
 
-  Future<bool> isPhaseVote(String role, BuildContext context) async{
+  Future doVote(int choix, BuildContext context) async{
 
-    while(isGettingVote){
-
-      final status = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/status');
-
-      if(status.statusCode == 200){
-        
-        var parsedJson = jsonDecode(status.body)['etat'] as String;
-        print('phase : '+ parsedJson);
-
-        switch(parsedJson){
-          case 'EtatPartie.VOYANTE':
-            if(role == 'VOYANTE'){
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => VoteScreen(role: role)),
-            );
-          }
-          break;
-          case 'EtatPartie.LOUP':
-            if(role == 'LOUP'){
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => VoteScreen(role: role)),
-              );
-            }
-            break;
-          default :
-            return false;
-            break;
-        }
-      }
-      else{ throw Exception('Failed'); }
-      
-      Future.delayed(Duration(seconds: 2));
-    }
-
-    return false;
-  }
-
-  Future doVote(String role, int choix, BuildContext context) async{
-
-      switch(role){
+      switch(joueurCourant.role){
 
         case "VOYANTE" :
           final response = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/voyante/'+ choix.toString());
@@ -216,6 +191,8 @@ class Data {
             
             var parsedJson = jsonDecode(response.body)['message'] as String;
             print('phase : '+ parsedJson);
+
+            showNotification("Vous avez choisi " + detailListJoueur[choix].nom + ", il est " + detailListJoueur[choix].role);
 
             Navigator.push(
               context,
@@ -226,12 +203,17 @@ class Data {
           break;
 
         case "LOUP": 
-          final response = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/' + joueurCourant.id + "/" + choix.toString());
+          final response = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/loupsvote/' + joueurCourant.id + "/" + choix.toString());
 
+          print(response.body);
           if(response.statusCode == 200){
 
             var parsedJson = jsonDecode(response.body)['message'] as String;
             print('phase : '+ parsedJson);
+
+            detailListJoueur.remove(detailListJoueur[choix].id);
+
+            showNotification("Les loups ont voté ! " + detailListJoueur[choix].nom + "est mort !");
             
             Navigator.push(
               context,
@@ -246,7 +228,6 @@ class Data {
           break;
       }
     }
-
 }
 
 void showNotification(String text){

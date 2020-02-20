@@ -4,17 +4,11 @@ import 'package:flutter_loup_garou/api.dart';
 
 class VoteScreen extends StatefulWidget {
 
-  final String role;
-
-  VoteScreen({Key key, this.role}) : super (key : key);
-
   @override
   _VoteScreenState createState() => _VoteScreenState();
 }
 
 class _VoteScreenState extends State<VoteScreen> {
-
-  String get role => role;
 
   @override
   Widget build(BuildContext context){
@@ -52,47 +46,39 @@ class _VoteScreenState extends State<VoteScreen> {
                               ),
                             ),
                             SizedBox(height: 50.0),
-                            StreamBuilder<List<String>>(
-                              stream: manager.joueurList(context),
-                              initialData: [],
-                              builder: (context,snapshot) {
-                                List<String> listeJoueur = snapshot.data;
-                                return ListView.builder(
-                                  primary: false,
-                                  shrinkWrap: true,
-                                  itemCount: listeJoueur.length,
-                                  itemBuilder: (context, index) {
-                                    return FadeInState(
+                            ListView.builder(
+                              primary: false,
+                              shrinkWrap: true,
+                              itemCount: Data.detailListJoueur.length,
+                              itemBuilder: (context, index) {
+                                return FadeInState(
+                                  child: Container(
+                                    child: InkWell(
+                                      onTap: () {
+                                        Data.isGettingDialogue = true;
+                                        manager.doVote(index, context);
+                                      },
                                       child: Container(
-                                        child: InkWell(
-                                          onTap: () {
-                                            Data.isGettingDialogue = true;
-                                            Data.isGettingList = false;
-                                            manager.doVote(role, index, context);
-                                          },
-                                          child: Container(
-                                            margin: EdgeInsets.only(left:50.0, right: 50.0, bottom: 30.0),
-                                            decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.all(Radius.circular(40.0)),
-                                            color: Color.fromRGBO(246, 187, 28, 1.0)
-                                            ),
-                                            height: 50.0,
-                                            child: Center(
-                                              child: Text(
-                                                listeJoueur[index],
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 20,
-                                                )
-                                              ),
-                                            ),
+                                        margin: EdgeInsets.only(left:50.0, right: 50.0, bottom: 30.0),
+                                        decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(Radius.circular(40.0)),
+                                        color: Color.fromRGBO(246, 187, 28, 1.0)
+                                        ),
+                                        height: 50.0,
+                                        child: Center(
+                                          child: Text(
+                                            Data.detailListJoueur[index].nom,
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                            )
                                           ),
                                         ),
-                                      )
-                                    );   
-                                  }
-                                );
+                                      ),
+                                    ),
+                                  )
+                                );   
                               }
                             )
                             ]
