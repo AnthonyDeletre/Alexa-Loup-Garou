@@ -11,13 +11,15 @@ class FinishScreen extends StatefulWidget {
   FinishScreen({Key key, this.value}) : super (key : key);
 
   @override
-  _FinishScreenState createState() => _FinishScreenState();
+  _FinishScreenState createState() => _FinishScreenState(value);
 }
 
 class _FinishScreenState extends State<FinishScreen> {
 
+  String value;
+ _FinishScreenState(this.value);
+
   String _animation = "trophy_success";
-  String get value => value;
 
   @override
   Widget build(BuildContext context){

@@ -23,8 +23,6 @@ class Data {
 
   Stream<String> dialogueList(BuildContext context) async*{
 
-    bool countScreen = false;
-
     while(isGettingDialogue){
 
       final response = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/status');
@@ -56,7 +54,7 @@ class Data {
               context,
               MaterialPageRoute(builder: (context) => VoteScreen()),
             );
-          }    
+          } 
           if(etat == "EtatPartie.VICTOIRE_VILLAGEOIS"){
             String value = "Villageois";
 
@@ -74,15 +72,13 @@ class Data {
             );
           }
         }
-        else if(!countScreen){
+        else{
+          isGettingList = false;
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => DeathScreen()),
           );
         }
-
-        countScreen = true;
-        
       }
       else{ throw Exception('Failed'); }
 
@@ -198,6 +194,7 @@ class Data {
 
           showNotification("Vous avez choisi " + listMinusSelf(Data.detailListJoueur,Data.joueurCourant)[choix].nom + ", il est " + listMinusSelf(Data.detailListJoueur,Data.joueurCourant)[choix].role);
 
+          isGettingList = true;
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => GameScreen()),
@@ -215,10 +212,11 @@ class Data {
           var parsedJson = jsonDecode(response.body)['message'] as String;
           print('phase : '+ parsedJson);
 
-          detailListJoueur.remove(detailListJoueur[choix].id);
+          // showNotification("Les loups ont voté ! " + listMinusSelf(Data.detailListJoueur,Data.joueurCourant)[choix].nom + "est mort !");
 
-          showNotification("Les loups ont voté ! " + detailListJoueur[choix].nom + "est mort !");
+          detailListJoueur.remove(detailListJoueur[choix].id);
           
+          isGettingList = true;
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => GameScreen()),

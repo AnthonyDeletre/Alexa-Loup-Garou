@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:flutter_loup_garou/pages/loginScreen.dart';
-// import 'package:flutter_loup_garou/pages/finishScreen.dart';
-// import 'package:flutter_loup_garou/pages/voteScreen.dart';
 
 void main() => runApp(Main());
 
@@ -15,8 +13,6 @@ class Main extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           theme: ThemeData(fontFamily: 'Montserrat'),
           home: LoginScreen()
-          // home: FinishScreen()
-          // home: VoteScreen()
       ),
     );
   }

@@ -14,6 +14,7 @@ class _VoteScreenState extends State<VoteScreen> {
   Widget build(BuildContext context){
 
     Data manager = Data();
+    Data.isGettingList = false;
     
     return Scaffold(
       backgroundColor: Color.fromRGBO(56, 36, 131, 1.0),

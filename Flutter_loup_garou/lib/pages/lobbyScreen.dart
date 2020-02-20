@@ -93,12 +93,12 @@ class _LobbyScreenState extends State<LobbyScreen> {
                                         child: Container(
                                           child: InkWell(
                                             onTap: () {
-                                              Navigator.push(
-                                                context,
-                                                // MaterialPageRoute(builder: (context) => DeathScreen()),
-                                                MaterialPageRoute(builder: (context) => VoteScreen()),
-                                                // MaterialPageRoute(builder: (context) => GameScreen()),
-                                              );
+                                              // Navigator.push(
+                                              //   context,
+                                              //   MaterialPageRoute(builder: (context) => DeathScreen()),
+                                              //   MaterialPageRoute(builder: (context) => VoteScreen()),
+                                              //   MaterialPageRoute(builder: (context) => GameScreen()),
+                                              // );
                                             },
                                             child: Container(
                                               decoration: BoxDecoration(
