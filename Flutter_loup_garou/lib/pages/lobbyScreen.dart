@@ -2,8 +2,6 @@ import 'package:flutter_loup_garou/animations/fadeInState.dart';
 import 'package:flutter_loup_garou/api.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:flutter_loup_garou/pages/voteScreen.dart';
-import 'package:flutter_loup_garou/pages/deathScreen.dart';
 
 class LobbyScreen extends StatefulWidget {
   @override
@@ -92,14 +90,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
                                       right: 70.0,
                                         child: Container(
                                           child: InkWell(
-                                            onTap: () {
-                                              // Navigator.push(
-                                              //   context,
-                                              //   MaterialPageRoute(builder: (context) => DeathScreen()),
-                                              //   MaterialPageRoute(builder: (context) => VoteScreen()),
-                                              //   MaterialPageRoute(builder: (context) => GameScreen()),
-                                              // );
-                                            },
+                                            onTap: () {},
                                             child: Container(
                                               decoration: BoxDecoration(
                                               borderRadius: BorderRadius.all(Radius.circular(40.0)),
