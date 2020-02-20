@@ -48,8 +48,6 @@ class Data {
 
   Stream<List<String>> get joueurList async*{
 
-    bool countNotif = false;
-
     while(isGettingList){
       
       final response = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/listejoueur'); 
@@ -70,25 +68,20 @@ class Data {
         
             var etat = jsonDecode(status.body)['etat'] as String;        
 
-            if(!countNotif && etat != 'EtatPartie.OFF'){
-              showNotification('Une partie est déja en cours !');
-            }
-            if(etat != 'EtatPartie.OFF'){
+            if(etat == 'EtatPartie.OFF'){
+              while(etat == 'EtatPartie.OFF'){
+                Future.delayed(Duration(seconds: 1));
+              }
               Navigator.push(
               getContext(),
               MaterialPageRoute(builder: (context) => GameScreen()),
               );
+            }else{
+              showNotification('Une partie est déja en cours !');
             }
           }
         }
-        else if(!countNotif){
-          showNotification('Il manque encore des joueurs !');
-        }
-
-        countNotif = true;
       }
-      else{ throw Exception('Failed'); }
-
       await Future.delayed(Duration(milliseconds: refreshRate));
     }
   }
