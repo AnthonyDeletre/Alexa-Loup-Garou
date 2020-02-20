@@ -85,7 +85,7 @@ class _FinishScreenState extends State<FinishScreen> {
                                   FadeInState(
                                     child: Center(
                                     child: Text(
-                                      "Les" + value + "ont gagnés !",
+                                      "Les " + value + " ont gagnés !",
                                       style: TextStyle(
                                         color: Colors.black,
                                         fontWeight: FontWeight.bold,
