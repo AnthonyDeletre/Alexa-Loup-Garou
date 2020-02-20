@@ -17,7 +17,7 @@ class FinishScreen extends StatefulWidget {
 class _FinishScreenState extends State<FinishScreen> {
 
   String _animation = "trophy_success";
-  String name = "loups";
+  String get value => value;
 
   @override
   Widget build(BuildContext context){
@@ -83,7 +83,7 @@ class _FinishScreenState extends State<FinishScreen> {
                                   FadeInState(
                                     child: Center(
                                     child: Text(
-                                      "Les" + name + "ont gagnés !",
+                                      "Les" + value + "ont gagnés !",
                                       style: TextStyle(
                                         color: Colors.black,
                                         fontWeight: FontWeight.bold,

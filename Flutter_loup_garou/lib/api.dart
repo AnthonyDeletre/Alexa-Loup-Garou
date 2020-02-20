@@ -29,8 +29,9 @@ class Data {
 
         var parsedJson = jsonDecode(response.body)['message'];
         String message = parsedJson != null ? parsedJson : "";
+        String messageConvert = message.replaceAll(new RegExp('<[^>]+>'),'');
 
-        yield message;
+        yield messageConvert;
 
         var etat = jsonDecode(response.body)['etat'];
 
@@ -40,12 +41,18 @@ class Data {
 
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => FinishScreen(value:  value)),
+            MaterialPageRoute(builder: (context) => FinishScreen(value: value)),
           );
         }
 
         if(etat == "EtatPartie.VICTOIRE_LOUPS"){
 
+          String value = "Loups";
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => FinishScreen(value: value)),
+          );
         }
       }
       else{ throw Exception('Failed'); }
