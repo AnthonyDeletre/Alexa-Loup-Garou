@@ -35,9 +35,9 @@ class Data {
 
         yield messageConvert;
 
-        updateCurrentUser(); // Met à jour les détails du joueur
+        await updateCurrentUser(); // Met à jour les détails du joueur
 
-        await Future.delayed(Duration(seconds: 20)); // Attente de 20 secondes avant le vote
+        await Future.delayed(Duration(seconds: 10)); // Attente de 20 secondes avant le vote
         
         if(joueurCourant.vivant == "True"){
           
@@ -169,10 +169,8 @@ class Data {
     for (Joueur j in detailListJoueur) {
       if(j.nom == joueurCourant.nom){ 
         joueurCourant = j; 
-        break;
       }
     }
-
     detailListJoueur.remove(joueurCourant.id);
   }
 
@@ -242,11 +240,11 @@ void showNotification(String text){
           child: Icon(
               Icons.notifications_active,
               color: Color.fromRGBO(56, 36, 131, 1.0),
-              size: 30,
+              size: 25,
             ),
           ),
           title: Text('Notificaton'),
-          subtitle: Text(text),
+          subtitle: Text(text, style: TextStyle(fontSize: 16)),
           trailing: InkWell(
             onTap: (){
               OverlaySupportEntry.of(context).dismiss();
