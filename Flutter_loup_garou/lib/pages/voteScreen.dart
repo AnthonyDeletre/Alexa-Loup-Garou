@@ -3,11 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_loup_garou/api.dart';
 
 class VoteScreen extends StatefulWidget {
+
+  final String role;
+
+  VoteScreen({Key key, this.role}) : super (key : key);
+
   @override
   _VoteScreenState createState() => _VoteScreenState();
 }
 
 class _VoteScreenState extends State<VoteScreen> {
+
+  String get role => role;
 
   @override
   Widget build(BuildContext context){
@@ -61,10 +68,7 @@ class _VoteScreenState extends State<VoteScreen> {
                                           onTap: () {
                                             Data.isGettingDialogue = true;
                                             Data.isGettingList = false;
-                                            // Navigator.push(
-                                            //   context,
-                                            //   MaterialPageRoute(builder: (context) => GameScreen()),
-                                            // );
+                                            manager.doVote(role, index, context);
                                           },
                                           child: Container(
                                             margin: EdgeInsets.only(left:50.0, right: 50.0, bottom: 30.0),

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_loup_garou/pages/voteScreen.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_loup_garou/pages/gameScreen.dart';
 import 'package:flutter_loup_garou/pages/finishScreen.dart';
@@ -34,6 +35,16 @@ class Data {
         yield messageConvert;
 
         var etat = jsonDecode(response.body)['etat'];
+
+        if(etat == "EtatPartie.VOYANTE"){
+
+          isPhaseVote("VOYANTE", context);
+        }    
+
+        if(etat == "EtatPartie.LOUP"){
+
+          isPhaseVote("LOUP", context);
+        }    
 
         if(etat == "EtatPartie.VICTOIRE_VILLAGEOIS"){
 
@@ -107,9 +118,9 @@ class Data {
               }
               await Future.delayed(Duration(milliseconds: refreshRate));
             }
+
             await updateCurrentUser(); // Mise a jour des informations du joueur courant
-            print(context);
-            print(joueurCourant.toString());
+
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => GameScreen()),
@@ -153,7 +164,7 @@ class Data {
     joueurCourant.nom = username;
   }
 
-  Future<bool> isPhaseVote(String role) async{
+  Future<bool> isPhaseVote(String role, BuildContext context) async{
 
     while(isGettingVote){
 
@@ -165,14 +176,20 @@ class Data {
         print('phase : '+ parsedJson);
 
         switch(parsedJson){
-          case 'EtatPartie.VOYANTE' :
+          case 'EtatPartie.VOYANTE':
             if(role == 'VOYANTE'){
-              return true;
-            }
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => VoteScreen(role: role)),
+            );
+          }
           break;
-          case '' ://todo ajouter les phases de jeu et selon le role, renvoyer si on vote ou pas
+          case 'EtatPartie.LOUP':
             if(role == 'LOUP'){
-              return true;
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => VoteScreen(role: role)),
+              );
             }
             break;
           default :
@@ -188,7 +205,7 @@ class Data {
     return false;
   }
 
-    Future<String> doVote(String role, int choix) async{ //seul la voyante et les loups garous sont à gerer ( voir la sorciere )
+  Future doVote(String role, int choix, BuildContext context) async{
 
       switch(role){
 
@@ -199,7 +216,11 @@ class Data {
             
             var parsedJson = jsonDecode(response.body)['message'] as String;
             print('phase : '+ parsedJson);
-            return parsedJson;
+
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => GameScreen()),
+            );
           }
           else{ throw Exception('Failed'); }
           break;
@@ -211,8 +232,11 @@ class Data {
 
             var parsedJson = jsonDecode(response.body)['message'] as String;
             print('phase : '+ parsedJson);
-            return parsedJson;
-
+            
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => GameScreen()),
+            );
           }
           else{ throw Exception('Failed'); }
           break;
@@ -222,7 +246,7 @@ class Data {
           break;
       }
     }
-    
+
 }
 
 void showNotification(String text){
