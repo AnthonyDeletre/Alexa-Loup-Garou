@@ -16,7 +16,6 @@ class _GameScreenState extends State<GameScreen> {
   Widget build(BuildContext context){
 
     Data.isGettingList = false;
-    manager.updateCurrentUser(); // Mise a jour des informations du joueur courant
     
     return Scaffold(
       backgroundColor: Color.fromRGBO(56, 36, 131, 1.0),

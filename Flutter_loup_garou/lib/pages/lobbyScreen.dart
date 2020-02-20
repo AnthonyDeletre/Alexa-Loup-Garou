@@ -16,8 +16,6 @@ class _LobbyScreenState extends State<LobbyScreen> {
   
   @override
   Widget build(BuildContext context){
-  
-  setContext(context);
 
   return Scaffold(
     backgroundColor: Color.fromRGBO(56, 36, 131, 1.0),
@@ -145,6 +143,14 @@ class _LobbyScreenState extends State<LobbyScreen> {
     ),
     )
   );
+  }
+
+  static changeContext(BuildContext context){
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => GameScreen()),
+    );
   }
 
   Widget _listItem(BuildContext context, String listeJoueur){

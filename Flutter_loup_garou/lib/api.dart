@@ -1,22 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_loup_garou/pages/lobbyScreen.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_loup_garou/pages/gameScreen.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:flare_flutter/flare_actor.dart';
 
 int refreshRate = 500; //in ms
-
-BuildContext mainContext;
-
-BuildContext getContext(){
-  return mainContext;
-}
-
-void setContext(BuildContext context){
-  mainContext = context;
-}
 
 class Data {
 
@@ -70,7 +61,7 @@ class Data {
           var etat = jsonDecode(status.body)['etat'] as String;   
           
           if(etat == 'EtatPartie.OFF'){
-            countNotif = !countNotif;
+            countNotif = true;
             while(etat == 'EtatPartie.OFF'){
 
               final response = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/listejoueur'); 
@@ -92,15 +83,12 @@ class Data {
               }
               await Future.delayed(Duration(milliseconds: refreshRate));
             }
-            Navigator.push(
-              getContext(),
-              MaterialPageRoute(builder: (context) => GameScreen()),
-              );
-          }else{
-            if(!countNotif){
-              countNotif = !countNotif;
+            updateCurrentUser(); // Mise a jour des informations du joueur courant
+            // changeContext(BuildContext context);
+          }
+          else if(!countNotif){
+              countNotif = true;
               showNotification('Une partie est déja en cours !');
-            }
           }
         }
     }
