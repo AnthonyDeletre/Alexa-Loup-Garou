@@ -1,13 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter_loup_garou/pages/lobbyScreen.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_loup_garou/pages/gameScreen.dart';
+import 'package:flutter_loup_garou/pages/finishScreen.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:flare_flutter/flare_actor.dart';
 
 int refreshRate = 500; //in ms
+// BuildContext context;
 
 class Data {
 
@@ -18,7 +19,7 @@ class Data {
   static List<Joueur> detailListJoueur;
   static Joueur joueurCourant = new Joueur(null, null, null, null);
 
-  Stream<String> get dialogueList async*{
+  Stream<String> dialogueList(BuildContext context) async*{
 
     while(isGettingDialogue){
 
@@ -30,6 +31,22 @@ class Data {
         String message = parsedJson != null ? parsedJson : "";
 
         yield message;
+
+        var etat = jsonDecode(response.body)['etat'];
+
+        if(etat == "EtatPartie.VICTOIRE_VILLAGEOIS"){
+
+          String value = "Villageois";
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => FinishScreen(value:  value)),
+          );
+        }
+
+        if(etat == "EtatPartie.VICTOIRE_LOUPS"){
+
+        }
       }
       else{ throw Exception('Failed'); }
 
@@ -37,7 +54,7 @@ class Data {
     }
   }
 
-  Stream<List<String>> get joueurList async*{
+  Stream<List<String>> joueurList(BuildContext context) async*{
 
     bool countNotif = false;
 
@@ -83,8 +100,13 @@ class Data {
               }
               await Future.delayed(Duration(milliseconds: refreshRate));
             }
-            updateCurrentUser(); // Mise a jour des informations du joueur courant
-            // changeContext(BuildContext context);
+            await updateCurrentUser(); // Mise a jour des informations du joueur courant
+            print(context);
+            print(joueurCourant.toString());
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => GameScreen()),
+            );
           }
           else if(!countNotif){
               countNotif = true;
@@ -105,7 +127,7 @@ class Data {
     else{ return false; }
   }
 
-  void updateCurrentUser() async{
+  Future updateCurrentUser() async{
   
     final status = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/status');
 

@@ -1,11 +1,15 @@
 import 'package:flutter_loup_garou/animations/fadeInState.dart';
 import 'package:flutter_loup_garou/pages/loginScreen.dart';
 import 'package:flare_flutter/flare_actor.dart';
-import 'package:flutter_loup_garou/api.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
 class FinishScreen extends StatefulWidget {
+
+  final String value;
+
+  FinishScreen({Key key, this.value}) : super (key : key);
+
   @override
   _FinishScreenState createState() => _FinishScreenState();
 }

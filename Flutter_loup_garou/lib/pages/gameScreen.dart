@@ -16,6 +16,7 @@ class _GameScreenState extends State<GameScreen> {
   Widget build(BuildContext context){
 
     Data.isGettingList = false;
+    // Data.mainContext = context;
     
     return Scaffold(
       backgroundColor: Color.fromRGBO(56, 36, 131, 1.0),
@@ -84,7 +85,7 @@ class _GameScreenState extends State<GameScreen> {
                               child: FadeInState(
                                 child: Center(
                                   child: StreamBuilder<String>(
-                                    stream: manager.dialogueList,
+                                    stream: manager.dialogueList(context),
                                     builder: (context,snapshot) {
                                       String message = snapshot.data;
                                       return Text(message != null ? message : '', style: TextStyle(color: Colors.white,fontSize: 16.0));

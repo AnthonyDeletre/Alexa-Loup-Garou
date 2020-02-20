@@ -46,7 +46,7 @@ class _VoteScreenState extends State<VoteScreen> {
                             ),
                             SizedBox(height: 50.0),
                             StreamBuilder<List<String>>(
-                              stream: manager.joueurList,
+                              stream: manager.joueurList(context),
                               initialData: [],
                               builder: (context,snapshot) {
                                 List<String> listeJoueur = snapshot.data;

@@ -17,6 +17,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
   @override
   Widget build(BuildContext context){
 
+  // Data.mainContext = context;
   return Scaffold(
     backgroundColor: Color.fromRGBO(56, 36, 131, 1.0),
     body: WillPopScope(
@@ -72,7 +73,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
                                         height: MediaQuery.of(context).size.height - 160.0,
                                         padding: EdgeInsets.only(bottom: 60.0),
                                           child: StreamBuilder<List<String>>(
-                                            stream: manager.joueurList,
+                                            stream: manager.joueurList(context),
                                             initialData: [],
                                             builder: (context,snapshot) {
                                               List<String> listeJoueur = snapshot.data;
@@ -143,14 +144,6 @@ class _LobbyScreenState extends State<LobbyScreen> {
     ),
     )
   );
-  }
-
-  static changeContext(BuildContext context){
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => GameScreen()),
-    );
   }
 
   Widget _listItem(BuildContext context, String listeJoueur){
