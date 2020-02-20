@@ -10,7 +10,6 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:http/http.dart' as http;
 
 int refreshRate = 500; //in ms
-// BuildContext context;
 
 class Data {
 
@@ -36,27 +35,33 @@ class Data {
         yield messageConvert;
 
         await updateCurrentUser(); // Met à jour les détails du joueur
-
-        await Future.delayed(Duration(seconds: 10)); // Attente de 20 secondes avant le vote
         
         if(joueurCourant.vivant == "True"){
           
           var etat = jsonDecode(response.body)['etat'];
 
           if(etat == "EtatPartie.VOYANTE" && joueurCourant.role == "VOYANTE"){
+            isGettingDialogue = false;
+            await Future.delayed(Duration(seconds: 15)); // Attend avant le vote
+
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => VoteScreen()),
             );
           }    
           if(etat == "EtatPartie.LOUPS" && joueurCourant.role == "LOUP"){
+            isGettingDialogue = false;
+            await Future.delayed(Duration(seconds: 15)); // Attend avant le vote
+
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => VoteScreen()),
             );
           } 
           if(etat == "EtatPartie.VICTOIRE_VILLAGEOIS"){
+            isGettingDialogue = false;
             String value = "Villageois";
+            await Future.delayed(Duration(seconds: 1)); // Attend avant le vote
 
             Navigator.push(
               context,
@@ -64,7 +69,9 @@ class Data {
             );
           }
           if(etat == "EtatPartie.VICTOIRE_LOUPS"){
+            isGettingDialogue = false;
             String value = "Loups";
+            await Future.delayed(Duration(seconds: 1)); // Attend avant le vote
 
             Navigator.push(
               context,
@@ -73,7 +80,8 @@ class Data {
           }
         }
         else{
-          isGettingList = false;
+          isGettingDialogue = false;
+
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => DeathScreen()),
@@ -194,7 +202,7 @@ class Data {
 
           showNotification("Vous avez choisi " + listMinusSelf(Data.detailListJoueur,Data.joueurCourant)[choix].nom + ", il est " + listMinusSelf(Data.detailListJoueur,Data.joueurCourant)[choix].role);
 
-          isGettingList = true;
+          isGettingDialogue = true;
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => GameScreen()),
@@ -216,7 +224,7 @@ class Data {
 
           detailListJoueur.remove(detailListJoueur[choix].id);
           
-          isGettingList = true;
+          isGettingDialogue = true;
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => GameScreen()),
