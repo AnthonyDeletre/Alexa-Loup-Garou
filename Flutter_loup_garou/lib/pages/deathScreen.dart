@@ -1,5 +1,6 @@
 import 'package:flutter_loup_garou/animations/fadeInState.dart';
 import 'package:flutter_loup_garou/pages/loginScreen.dart';
+import 'package:flutter_loup_garou/api.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
@@ -16,6 +17,9 @@ class _DeathScreenState extends State<DeathScreen> {
 
   @override
   Widget build(BuildContext context){
+
+  Data.isGettingList = false;
+
   return Scaffold(
     backgroundColor: Color.fromRGBO(56, 36, 131, 1.0),
     body: WillPopScope(

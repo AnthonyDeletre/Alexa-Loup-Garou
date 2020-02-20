@@ -16,8 +16,6 @@ class _LobbyScreenState extends State<LobbyScreen> {
   
   @override
   Widget build(BuildContext context){
-
-  // Data.mainContext = context;
   return Scaffold(
     backgroundColor: Color.fromRGBO(56, 36, 131, 1.0),
     body: WillPopScope(
@@ -97,8 +95,8 @@ class _LobbyScreenState extends State<LobbyScreen> {
                                             onTap: () {
                                               Navigator.push(
                                                 context,
-                                                MaterialPageRoute(builder: (context) => DeathScreen()),
-                                                // MaterialPageRoute(builder: (context) => VoteScreen()),
+                                                // MaterialPageRoute(builder: (context) => DeathScreen()),
+                                                MaterialPageRoute(builder: (context) => VoteScreen()),
                                                 // MaterialPageRoute(builder: (context) => GameScreen()),
                                               );
                                             },

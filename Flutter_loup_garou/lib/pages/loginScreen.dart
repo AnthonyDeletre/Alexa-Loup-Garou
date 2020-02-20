@@ -38,7 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             image: AssetImage("assets/images/background.png"),
                             fit: BoxFit.cover
                           ),
-                          SizedBox(height: 40.0),
+                          SizedBox(height: 60.0),
                           Form(
                             key: _formKey,
                             child: Column(

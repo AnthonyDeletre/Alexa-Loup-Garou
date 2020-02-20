@@ -23,6 +23,8 @@ class Data {
 
   Stream<String> dialogueList(BuildContext context) async*{
 
+    bool countScreen = false;
+
     while(isGettingDialogue){
 
       final response = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/status');
@@ -72,12 +74,14 @@ class Data {
             );
           }
         }
-        else{
+        else if(!countScreen){
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => DeathScreen()),
           );
         }
+
+        countScreen = true;
         
       }
       else{ throw Exception('Failed'); }
@@ -180,52 +184,67 @@ class Data {
 
   Future doVote(int choix, BuildContext context) async{
 
-      switch(joueurCourant.role){
+    switch(joueurCourant.role){
 
-        case "VOYANTE" :
-          final response = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/voyante/'+ choix.toString());
+      case "VOYANTE" :
+        final response = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/voyante/'+ 
+          
+        listMinusSelf(Data.detailListJoueur,Data.joueurCourant)[choix].id.toString());
 
-          if(response.statusCode == 200){
-            
-            var parsedJson = jsonDecode(response.body)['message'] as String;
-            print('phase : '+ parsedJson);
+        if(response.statusCode == 200){
+          
+          var parsedJson = jsonDecode(response.body)['message'] as String;
+          print('phase : '+ parsedJson);
 
-            showNotification("Vous avez choisi " + detailListJoueur[choix].nom + ", il est " + detailListJoueur[choix].role);
+          showNotification("Vous avez choisi " + listMinusSelf(Data.detailListJoueur,Data.joueurCourant)[choix].nom + ", il est " + listMinusSelf(Data.detailListJoueur,Data.joueurCourant)[choix].role);
 
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => GameScreen()),
-            );
-          }
-          else{ throw Exception('Failed'); }
-          break;
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => GameScreen()),
+          );
+        }
+        else{ throw Exception('Failed'); }
+        break;
 
-        case "LOUP": 
-          final response = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/loupsvote/' + joueurCourant.id + "/" + choix.toString());
+      case "LOUP": 
+        final response = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/loupsvote/' + joueurCourant.id + "/" + listMinusSelf(Data.detailListJoueur,Data.joueurCourant)[choix].id);
 
-          print(response.body);
-          if(response.statusCode == 200){
+        print(response.body);
+        if(response.statusCode == 200){
 
-            var parsedJson = jsonDecode(response.body)['message'] as String;
-            print('phase : '+ parsedJson);
+          var parsedJson = jsonDecode(response.body)['message'] as String;
+          print('phase : '+ parsedJson);
 
-            detailListJoueur.remove(detailListJoueur[choix].id);
+          detailListJoueur.remove(detailListJoueur[choix].id);
 
-            showNotification("Les loups ont voté ! " + detailListJoueur[choix].nom + "est mort !");
-            
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => GameScreen()),
-            );
-          }
-          else{ throw Exception('Failed'); }
-          break;
+          showNotification("Les loups ont voté ! " + detailListJoueur[choix].nom + "est mort !");
+          
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => GameScreen()),
+          );
+        }
+        else{ throw Exception('Failed'); }
+        break;
 
-        default:
-          return null;
-          break;
+      default:
+        return null;
+        break;
+    }
+  }
+
+  List<Joueur> listMinusSelf(List<Joueur> lP, Joueur self){
+
+    List<Joueur> lJ = List<Joueur>();
+
+    for(int i=0;i<lP.length;i++){
+
+      if(lP[i].nom != joueurCourant.nom){
+        lJ.add(lP[i]);
       }
     }
+    return lJ;
+  }
 }
 
 void showNotification(String text){
@@ -264,17 +283,6 @@ void showNotification(String text){
       ),
     );
   }, duration: Duration(seconds: 30));
-
-  
-  List<Joueur> listMinusSelf(List<Joueur> lP, Joueur self){
-    List<Joueur> lJ = List<Joueur>();
-    for(int i=0;i<lP.length;i++){
-      if(lP[i].nom!=joueurCourant.nom){
-        lJ.add(lP[i]);
-      }
-    }
-    return lJ;
-  }
 }
 
 class Joueur {

@@ -14,7 +14,6 @@ class _VoteScreenState extends State<VoteScreen> {
   Widget build(BuildContext context){
 
     Data manager = Data();
-    Data.isGettingDialogue = false;
     
     return Scaffold(
       backgroundColor: Color.fromRGBO(56, 36, 131, 1.0),
@@ -55,7 +54,6 @@ class _VoteScreenState extends State<VoteScreen> {
                                   child: Container(
                                     child: InkWell(
                                       onTap: () {
-                                        Data.isGettingDialogue = true;
                                         manager.doVote(index, context);
                                       },
                                       child: Container(
@@ -67,7 +65,7 @@ class _VoteScreenState extends State<VoteScreen> {
                                         height: 50.0,
                                         child: Center(
                                           child: Text(
-                                            manager.listMinusSelf(Data.detailListJoueur,Data.joueurCourant).nom,
+                                            manager.listMinusSelf(Data.detailListJoueur,Data.joueurCourant)[index].nom,
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                             color: Colors.white,

@@ -16,7 +16,6 @@ class _GameScreenState extends State<GameScreen> {
   Widget build(BuildContext context){
 
     Data.isGettingList = false;
-    // Data.mainContext = context;
     
     return Scaffold(
       backgroundColor: Color.fromRGBO(56, 36, 131, 1.0),
