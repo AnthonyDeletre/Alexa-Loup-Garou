@@ -8,6 +8,8 @@ class VoteScreen extends StatefulWidget {
   _VoteScreenState createState() => _VoteScreenState();
 }
 
+//Ecran de vote (appelé par l'écran de jeu quand le joueur doit voter)
+
 class _VoteScreenState extends State<VoteScreen> {
 
   @override

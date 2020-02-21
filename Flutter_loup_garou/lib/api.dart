@@ -20,6 +20,8 @@ class Data {
   static List<Joueur> detailListJoueur;
   static Joueur joueurCourant = new Joueur(null, null, null, null);
 
+//recupère les dialogue de Alexa pour les afficher
+//gère aussi les changement de phase du jeu et donc le passage à l'écran de vote
   Stream<String> dialogueList(BuildContext context) async*{
 
     while(isGettingDialogue){
@@ -94,6 +96,8 @@ class Data {
     }
   }
 
+//recupère la liste des noms des joueurs
+//gère aussi le passage de l'écran du lobby à l'écran de jeu
   Stream<List<String>> joueurList(BuildContext context) async*{
 
     bool countNotif = false;
@@ -156,6 +160,7 @@ class Data {
     }
   }
 
+//permet à un nouveau joueur de rejoindre le lobby
   Future<bool> connect(String username) async{
   
     final response = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/join/'+ username);
@@ -167,6 +172,7 @@ class Data {
     else{ return false; }
   }
 
+//met à jour les informations sur le joueur actuel
   Future updateCurrentUser() async{
   
     final status = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/status');
@@ -186,6 +192,7 @@ class Data {
     joueurCourant.nom = username;
   }
 
+//permet, selon le role du joueur, de voter quand vient sa phase
   Future doVote(int choix, BuildContext context) async{
 
     switch(joueurCourant.role){
@@ -239,6 +246,8 @@ class Data {
     }
   }
 
+//retire l'utilisateur de la liste des joueur
+//(permet de récupérer une liste de joueur pour les votes)
   List<Joueur> listMinusSelf(List<Joueur> lP, Joueur self){
 
     List<Joueur> lJ = List<Joueur>();
@@ -253,6 +262,7 @@ class Data {
   }
 }
 
+//affiche en notification les résultats du vote
 void showNotification(String text){
 
   showOverlayNotification((context) {
@@ -309,6 +319,7 @@ class Joueur {
     return '{ ${this.id}, ${this.nom}, ${this.role}; ${this.vivant} }';
   }
 
+//récupère le chemin vers l'image selon le role du joueur
   static String idCarteToChemin(String role){
 
     switch(role){

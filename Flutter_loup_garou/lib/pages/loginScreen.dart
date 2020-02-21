@@ -8,6 +8,8 @@ class LoginScreen extends StatefulWidget {
   _LoginScreenState createState() => _LoginScreenState();
 }
 
+//Ecran pour rejoindre le lobby (premier ecran qui s'affiche quand on lance l'application)
+
 class _LoginScreenState extends State<LoginScreen> {
 
   final _formKey = GlobalKey<FormState>();

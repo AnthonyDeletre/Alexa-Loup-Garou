@@ -8,6 +8,8 @@ class LobbyScreen extends StatefulWidget {
   _LobbyScreenState createState() => _LobbyScreenState();
 }
 
+//Ecran d'attente pour la création de la partie
+
 class _LobbyScreenState extends State<LobbyScreen> {
 
   Data manager = Data();

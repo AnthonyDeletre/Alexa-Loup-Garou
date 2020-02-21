@@ -10,6 +10,8 @@ class FinishScreen extends StatefulWidget {
 
   FinishScreen({Key key, this.value}) : super (key : key);
 
+//Ecran qui s'affiche en cas de fin de partie sans que le joueur soit mort (victoire)
+
   @override
   _FinishScreenState createState() => _FinishScreenState(value);
 }

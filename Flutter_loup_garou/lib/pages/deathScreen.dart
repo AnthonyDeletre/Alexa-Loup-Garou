@@ -10,6 +10,7 @@ class DeathScreen extends StatefulWidget {
   _DeathScreenState createState() => _DeathScreenState();
 }
 
+//Ecran qui s'affiche à la mort d'un joueur
 class _DeathScreenState extends State<DeathScreen> {
 
   String _animation = "skull";

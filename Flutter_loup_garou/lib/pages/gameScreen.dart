@@ -8,6 +8,8 @@ class GameScreen extends StatefulWidget {
   _GameScreenState createState() => _GameScreenState();
 }
 
+//Ecran principale de jeu (affiche la carte du joueur et ce qu'alexa dit)
+
 class _GameScreenState extends State<GameScreen> {
 
   Data manager = Data();
