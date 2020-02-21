@@ -135,9 +135,11 @@ class Partie:
                         self.joueurs[x].role = TypeCarte.VOYANTE
                         voyante = False
             if chasseur:
-                x = random.randint(0, len(self.joueurs)-1)
-                if self.joueurs[x].role == TypeCarte.UNDEFINED:
-                    self.joueurs[x].role = TypeCarte.CHASSEUR
+                while chasseur:
+                    x = random.randint(0, len(self.joueurs)-1)
+                    if self.joueurs[x].role == TypeCarte.UNDEFINED:
+                        self.joueurs[x].role = TypeCarte.CHASSEUR
+                        chasseur = False
             for x in self.joueurs:
                 if x.role == TypeCarte.UNDEFINED:
                     x.role = TypeCarte.VILLAGEOIS
@@ -173,7 +175,7 @@ class Partie:
             # Création liste vote loup
             self.victimes = []
             # Generation de la liste
-            self.loupsVotes = []
+            self.loupsVotes = {}
             for x in self.joueursVivants():
                 if x.role == TypeCarte.LOUP and x.vivant == True:
                     self.loupsVotes[x.iden] = None
@@ -347,7 +349,6 @@ class Partie:
             for x in self.joueurs:
                 if x.iden == idVictime and x.vivant == True:
                     x.vivant = False
-                    # return {"response": "200", "message": "Le village a décidé d'éliminer {}, qui était {}.".format(x.nom, x.role.name)}
                     if x.role == TypeCarte.CHASSEUR:
                         self.etapeSuivante("CHASSEUR")
                         return {"response": "200", "message": "Le village a décidé d'éliminer {}, qui était {}. Dans son dernier souffle, il décide de tuer quelqu'un.".format(x.nom, x.role.name)}
