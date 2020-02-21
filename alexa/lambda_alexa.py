@@ -140,7 +140,7 @@ class EtatPartieIntentHandler(AbstractRequestHandler):
     def handle(self, handler_input):
         speak_output = TestRequests.getEtatPartie() 
         if speak_output == None:
-            speak_output = "Erreur lors du demarrage de la partie"
+            speak_output = "Erreur obtention de l'état de la partie"
         return (
             handler_input.response_builder.speak(speak_output)
             # .ask(speak_output)
