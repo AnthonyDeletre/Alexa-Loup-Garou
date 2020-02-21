@@ -15,4 +15,8 @@ Skill Alexa, le jeu du Loup Garou
 _______
 
 # Installation
-Télécharger le .apk de l'application dans la section Release puis installé le fichier sur un smartphone Android 
+Télécharger le .apk de l'application dans la section Release puis installer le fichier sur un smartphone Android 
+
+Le Skill Alexa est disponible via le fichier lambda_alexa.py, utiliser ce code pour créer un skill via un compte développeur Amazon Alexa
+
+Un Skill Alexa sera bientôt disponible !
