@@ -48,4 +48,4 @@ Choix du chasseur:
 
 _______
 
-(Lien du Trello)[https://trello.com/b/RxOOx7eE/le-loup-garou]
+[Lien du Trello](https://trello.com/b/RxOOx7eE/le-loup-garou)
