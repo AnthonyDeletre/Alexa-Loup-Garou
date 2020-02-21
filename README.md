@@ -46,4 +46,6 @@ Choix du chasseur:
 - J’élimine le joueur <Numéro du Joueur>
 - Je tue le joueur <Numéro du Joueur>
 
+_______
 
+(Lien du Trello)[https://trello.com/b/RxOOx7eE/le-loup-garou]
