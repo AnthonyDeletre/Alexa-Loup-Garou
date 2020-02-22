@@ -83,6 +83,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                     onTap: () async {
                                       if (_formKey.currentState.validate()) {
                                         if(await manager.connect(_pseudo)){
+                                          Data.countNotif = false;
+                                          Data.isGettingList = true;
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(builder: (context) => LobbyScreen()),

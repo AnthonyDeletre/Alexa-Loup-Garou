@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_loup_garou/pages/voteScreen.dart';
 import 'package:flutter_loup_garou/pages/deathScreen.dart';
+import 'package:flutter_loup_garou/pages/waitingScreen.dart';
 import 'package:flutter_loup_garou/pages/gameScreen.dart';
 import 'package:flutter_loup_garou/pages/finishScreen.dart';
 import 'package:overlay_support/overlay_support.dart';
@@ -16,6 +17,7 @@ class Data {
   static bool isGettingList = true;
   static bool isGettingDialogue = true;
   static bool isGettingVote = true;
+  static bool countNotif = false;
   static int nbJoueur = 0;
   static List<Joueur> detailListJoueur;
   static Joueur joueurCourant = new Joueur(null, null, null, null);
@@ -100,20 +102,7 @@ class Data {
 //gère aussi le passage de l'écran du lobby à l'écran de jeu
   Stream<List<String>> joueurList(BuildContext context) async*{
 
-    bool countNotif = false;
-
     while(isGettingList){
-
-      final response = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/listejoueur'); 
-
-      if(response.statusCode == 200){
-
-        var parsedJson = jsonDecode(response.body)['joueurs'];
-        List<String> joueurs = parsedJson != null ? List.from(parsedJson) : "";
-        nbJoueur = joueurs.length;
-
-        yield joueurs;
-      }
 
       final status = await http.get('http://loupgarouserveur-env.5p6f8pdp73.us-east-1.elasticbeanstalk.com/status');
 
@@ -154,7 +143,11 @@ class Data {
           }
           else if(!countNotif){
               countNotif = true;
-              showNotification('Une partie est déja en cours !');
+              isGettingList = false;
+              Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => WaitingScreen()),
+            );
           }
         }
     }
