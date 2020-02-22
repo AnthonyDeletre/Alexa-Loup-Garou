@@ -24,7 +24,7 @@ Il peut également être installé sur vote **Amazon Echo** via ce lien : [Skill
 _______
 
 # Invocation
-Pour utiliser des intents de l’application, dites **Alexa loup garou**, alexa se met en écoute et vous pouvez dire l’intent souhaité ou **Alexa demande à loup garou <Intents>**
+Pour utiliser des intents de l’application, dites **Alexa ! loup garou !**, alexa se met en écoute et vous pouvez dire l’intent souhaité ou **Alexa ! Demande à loup garou ...**
 
 # Intents
 Démarrer la partie: 
