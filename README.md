@@ -19,7 +19,7 @@ Télécharger le .apk de l'application dans la section Release puis installer le
 
 Le Skill Alexa est disponible via le fichier lambda_alexa.py, utiliser ce code pour créer un skill via un compte développeur **Amazon Alexa**
 
-Un Skill Alexa sera bientôt disponible !
+Il peut également être installé sur vote **Amazon Echo** via ce lien : [Skill Alexa](https://skills-store.amazon.com/deeplink/tvt/5041519e256188813917fcae070118e20e4974e1bce68206e1be5ff6cf9cd58651635803040058ce2cba9a292425c9f0d21c13c41119233d71b0ca36ff5fb2c641f22fc54c81616ee270996fdd44ffdde7ffe1a2cd5872ede7a9e366daff50f4d5342515ca5f9bb22347238c592f8ffb)
 
 _______
 
