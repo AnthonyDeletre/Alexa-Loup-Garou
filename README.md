@@ -8,14 +8,10 @@ Skill Alexa, le jeu du Loup Garou
 
 > Chavatte Eguinane 
 
-
-- API Back développée en Python
-- Interface Mobile développée en Flutter
-
 _______
 
 # Installation
-Télécharger le .apk de l'application dans la section Release puis installer le fichier sur un smartphone Android 
+Télécharger le .apk de l'application dans la section Release : https://github.com/AnthonyDeletre/Alexa-Loup-Garou/releases puis installer le fichier sur un smartphone Android 
 
 Le Skill Alexa est disponible via le fichier lambda_alexa.py, utiliser ce code pour créer un skill via un compte développeur **Amazon Alexa**
 
